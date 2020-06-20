@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+<meta charset="utf-8">
+<title>提醒</title>
+<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+<link rel="stylesheet" href="css/setup.css">
+<script src="js/modernizr.custom.05740.js"></script>
+<script src="js/jquery-2.1.0.min.js"></script>
+<script src="js/fastclick.js"></script>
+<script>
+$(function() {
+  
+  /* 久坐提醒状态status，打开为1，关闭为0 */
+  
+  FastClick.attach(document.body);
+  
+  var weixinId;
+  
+  // 获取url中的微信id
+  (function getWeixinId() {
+    var qs = location.search.length > 0 ? location.search.slice(1) : '';
+    if(qs.indexOf('weixinId') > -1) {
+      weixinId = qs.match(/weixinId=([^&]*)/)[1];
+    }
+  })();
+  
+  // 设置微信id
+  $('[name=weixinId]').val(weixinId);
+  
+  // 获取原数据（提醒时间段）
+  $.getJSON('http://114.255.24.42/order/h/v2/userSettings/getLongSit', {weixinId: weixinId}, function(data) {
+    $('[name=timeFrom]').val(data.timeFrom);
+    $('[name=timeTo]').val(data.timeTo);
+    if(data.status) {
+      $('#input-status').prop('checked', true).change();
+    }
+    initInputTime();
+  });
+  
+  // 初始化输入框
+  function initInputTime() {
+    if (Modernizr.touch && Modernizr.inputtypes.time) {
+      $(document).on('change blur', '[type=time]', function(e) {
+        var defaultValue = $(e.target).data('default');
+        if(e.target.value === '') {
+          e.target.value = defaultValue;
+        }
+      });
+    } else {
+      $('[type=time]').each(function() {
+        var id = $(this).attr('name'),
+            hour = this.value ? this.value.split(':')[0] : '',
+            minute = this.value ? this.value.split(':')[1] : '';
+        $(this).hide().after(fallbackInputTime(id, hour, minute));
+      });
+      $(document).on('change', '.input-time-group > .input-time', function() {
+        var $timeGroup = $(this).closest('.input-time-group'),
+            name = $timeGroup.attr('id'),
+            hour = $timeGroup.find('.input-time').eq(0).val(),
+            minute = $timeGroup.find('.input-time').eq(1).val(),
+            time = hour + ':' + minute;
+        $('[name=' + name + ']').val(time);
+      });
+    }
+  }
+  
+  
+  // 回退 input="time" 为 select
+  function fallbackInputTime(id, hour, minute) {
+    var selectHour = document.createElement('select'),
+        selectMinute = document.createElement('select'),
+        $inputGroup = $('<span class="input-time-group"></span>'),
+        $colon = $('<span class="time-colon">:</span>'),
+        hour = hour ? parseInt(hour) : 0,
+        minute = minute ? parseInt(minute) : 0;
+    selectHour.className = 'input-time';
+    selectMinute.className = 'input-time';
+    for(var i = 0; i < 24; i++) {
+      var optionHour = new Option(i < 10 ? '0' + i : i);
+      if(i === hour) {
+        optionHour.selected = true;
+      }
+      selectHour.add(optionHour, undefined);
+    }
+    for(var j = 0; j < 60; j++) {
+      var optionMinute = new Option(j < 10 ? '0' + j : j);
+      if(j === minute) {
+        optionMinute.selected = true;
+      }
+      selectMinute.add(optionMinute, undefined);
+    }
+    if(id)  {
+      $inputGroup.attr('id', id);
+    }
+    $inputGroup.append(selectHour).append($colon).append(selectMinute);
+    return $inputGroup;
+  }
+
+  // 表单提交
+  $('#remind').on('submit', function(event) {
+    event.preventDefault();
+    $submitBtn = $('[type=submit]', this).prop('disabled', true).html('保存中...');
+    var formValues = $(this).serialize(),
+        formAction = $(this).attr('action');
+    $.post(formAction, formValues, function(data) {
+      $submitBtn.prop('disabled', false).html('保 存');
+      if(data.ret === 1) {
+        $('.alert-success').addClass('show').on('webkitAnimationEnd animationend', function() {
+          $(this).removeClass('show');
+        });
+      } else {
+        // 错误提示
+      }
+    }, 'json');
+  });
+  
+  // 开关 切换 抽屉
+  $('.drawer').each(function() {
+    var $switch = $('.switch', this),
+        $drawerBody = $('.drawer-body', this),
+        drawerBodyHeight = $('.drawer-body-inner').outerHeight();
+    $switch.on('change', function(e) {
+      if(e.target.checked) {
+        $drawerBody.css({height: drawerBodyHeight});
+      } else {
+        $drawerBody.css({height: 0});
+      }
+    });
+  });
+  
+  // 时间 change 时，检查 结束时间 大于 起始时间
+  
+  // 时间间隔大于1小时
+  
+})
+</script>
+</head>
+<body>
+	<div class="container">
+  	<form id="remind" method="post" action="http://114.255.24.42/order/h/v2/userSettings/setLongSit">
+  	  <input type="hidden" name="weixinId" value="">
+  	  
+  	  <div class="drawer">
+    	  <div class="drawer-header">
+      	  <div class="drawer-title">久坐提醒</div>
+      	  <div class="switch">
+        	  <input type="checkbox" id="input-status" name="status" value="1">
+        	  <label for="input-status"></label>
+      	  </div>
+    	  </div>
+    	  <div class="drawer-body text-center">
+      	  <div class="drawer-body-inner">
+          	<input type="time" class="input-time" data-default="09:00" name="timeFrom" value="00:00">
+          	<span class="input-time-divider">至</span>
+          	<input type="time" class="input-time" data-default="18:00" name="timeTo" value="00:00">
+        	</div>
+    	  </div>
+  	  </div>
+  	  
+  	  <p class="help-block text-center h6 mtb20">在时段内，每小时不足60步，将提醒你开始运动</p>
+    	
+    	<div class="form-group"><button type="submit" class="btn btn-primary btn-lg btn-block">保 存</button></div>
+    	</form>
+    	
+    	<div class="alert-success">保存成功</div>
+	</div>
+</body>
+</html>

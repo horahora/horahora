@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="initial-scale=1, user-scalable=no">
+<title>乐跑－运动</title>
+<link rel="stylesheet" href="css/style.css">
+<script src="js/jquery-2.1.0.min.js"></script>
+<script src="js/echarts-plain.js"></script>
+<!-- <script src="js/app.js"></script> -->
+<script src="js/daily-data.js"></script>
+</head>
+<body id="sport">
+  <nav id="global-nav">
+    <ul>
+      <li class="active"><a href="daily-data.html" data-href="daily-data.html" class="nav-sport">运动</a></li>
+      <li><a href="trend.html" data-href="trend.html" class="nav-trend">趋势</a></li>
+    </ul>
+  </nav>
+  <div class="page-wrapper">
+    <div class="inner">
+      <a href="#" class="date-nav date-prev">上一日</a>
+      <a href="#" class="date-nav date-next">下一日</a>
+      <div class="data-date"></div>
+      <ul class="nav-tabs">
+        <li class="active"><a href="#tab-sport">运动数据</a></li>
+        <li><a href="#tab-sleep">睡眠数据</a></li>
+      </ul>
+      <div class="tab-content">
+        <div class="tab-pane active" id="tab-sport">
+          <div class="chart-wrapper">
+            <div id="chart-sport" class="chart-content"></div>
+          </div>
+          <ul class="data-list">
+            <li class="data-steps">
+              <span class="label">步数</span>
+              <span class="data-content"></span>
+            </li>
+            <li class="data-calorie">
+              <span class="label">卡路里</span>
+              <span class="data-content"></span>
+            </li>
+            <li class="data-distance">
+              <span class="label">里程</span>
+              <span class="data-content"></span>
+            </li>
+          </ul>
+        </div>
+        <div class="tab-pane" id="tab-sleep">
+          <div class="chart-wrapper">
+            <div id="chart-sleep" class="chart-content"></div>
+          </div>
+          <ul class="data-list">
+            <li class="data-deep-sleep">
+              <span class="label">深睡状态</span>
+              <span class="data-content"></span>
+            </li>
+            <li class="data-shallow-sleep">
+              <span class="label">浅睡状态</span>
+              <span class="data-content"></span>
+            </li>
+            <li class="data-no-sleep">
+              <span class="label">清醒状态</span>
+              <span class="data-content"></span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+</body>
+</html>

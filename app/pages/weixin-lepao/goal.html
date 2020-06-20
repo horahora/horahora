@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+<meta charset="utf-8">
+<title>目标</title>
+<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+<link rel="stylesheet" href="css/setup.css">
+<script src="js/jquery-2.1.0.min.js"></script>
+<script src="js/fastclick.js"></script>
+<script src="js/rangeslider.min.js"></script>
+<script>
+$(function() {
+  FastClick.attach(document.body);
+  
+  var weixinId,
+      recommendSteps;
+  
+  // 获取url中的微信id
+  (function getWeixinId() {
+    var qs = location.search.length > 0 ? location.search.slice(1) : '';
+    if(qs.indexOf('weixinId') > -1) {
+      weixinId = qs.match(/weixinId=([^&]*)/)[1];
+    }
+  })();
+  
+  // 设置微信id
+  $('[name=weixinId]').val(weixinId);
+  
+  // 获取原数据（设置）
+  $.getJSON('http://114.255.24.42/order/h/v2/userSettings/getSetInfo', {weixinId: weixinId}, function(data) {
+    if(data.height > 0) {
+      var age = data.age;
+      switch (true) {
+        case age >= 0 && age < 15:
+        case age >= 50 && age < 60:
+          recommendSteps = 8000;
+          break;
+        case age >= 15 && age < 25:
+        case age >= 40 && age < 50:
+          recommendSteps = 10000;
+          break;
+        case age >= 25 && age < 40:
+          recommendSteps = 12000;
+          break;
+        case age >= 60:
+          recommendSteps = 6000;
+          break;
+      }
+    } else {
+      recommendSteps = 10000;
+    }
+    placeRecommend();
+  });
+  
+  // 获取原数据（目标）
+  $.getJSON('http://114.255.24.42/order/h/v2/userSettings/getDailyGoal', {weixinId: weixinId}, function(data) {
+    $('#range-steps').val(data.stepGoal).change();
+  });
+  
+  // 表单提交
+  $('#goal').on('submit', function(event) {
+    event.preventDefault();
+    $submitBtn = $('[type=submit]', this).prop('disabled', true).html('保存中...');
+    var formValues = $(this).serialize(),
+        formAction = $(this).attr('action');
+    $.post(formAction, formValues, function(data) {
+      $submitBtn.prop('disabled', false).html('保 存');
+      if(data.ret === 1) {
+        $('.alert-success').addClass('show').on('webkitAnimationEnd animationend', function() {
+          $(this).removeClass('show');
+        });
+      } else {
+        // 错误提示
+      }
+    }, 'json');
+  });
+  
+  // 滑块
+  $('[type=range]').rangeslider({
+    polyfill: false,
+    onSlide: function(position, value) {
+      if(value === recommendSteps) {
+        $('#range-steps ~ .recommend-value').on('webkitAnimationEnd animationend', function() {
+          $(this).removeClass('popup');
+        }).addClass('popup');
+      }
+    }
+  });
+  
+  // 输出滑块的值
+  $('#range-steps').on('change', function(event) {
+    var value = event.target.value;
+    $('#output-steps').html(value);
+    $('#output-calorie').html(Math.round(value*0.038));
+  });
+  
+  // 放置 推荐值 
+  function placeRecommend() {
+    var sliderWidth = $('#range-steps ~ .rangeslider').outerWidth(),
+        handlerWidth = $('#range-steps ~ .rangeslider .rangeslider__handle').outerWidth(),
+        max = Number($('#range-steps').attr('max')),
+        min = Number($('#range-steps').attr('min'));
+    $('#range-steps ~ .recommend-value').css({
+      left: (recommendSteps - min) * (sliderWidth - handlerWidth) / (max - min)
+    });
+  }
+  
+  $(window).on('resize', function() {
+     placeRecommend();
+    
+  });
+  
+})
+</script>
+</head>
+<body>
+	<div class="container">
+  	<form id="goal" method="post" action="http://114.255.24.42/order/h/v2/userSettings/setDailyGoal">
+    	<div class="ptb20">
+    	  <div class="justify text-center">
+      	  <div class="justify-item" style="width: 50%;">
+        	  <div class="label">运动</div>
+        	  <div class="output-wrapper text-primary">
+          	  <output id="output-steps" class="h3">0</output> 步
+        	  </div>
+      	  </div>
+      	  <div class="justify-item" style="width: 50%;">
+        	  <div class="label">消耗</div>
+        	  <div class="output-wrapper text-primary">
+          	  <output id="output-calorie" class="h3">0</output> 大卡
+        	  </div>
+      	  </div>
+    	  </div>
+    	  <input type="hidden" name="weixinId" value="">
+        <div class="range-wrapper">
+          <input id="range-steps" type="range" min="2000" max="20000" step="500" name="goal" value="0">
+          <span class="recommend-value">推荐</span>
+        </div>
+    	</div>
+    	
+    	<div class="form-group"><button type="submit" class="btn btn-primary btn-lg btn-block">保 存</button></div>
+  	</form>
+  	
+  	<div class="alert-success">保存成功</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,813 @@
+/*========================================================================
+  Base
+========================================================================*/
+@-ms-viewport {
+  width: device-width;
+}
+
+@viewport {
+  width: device-width;
+}
+
+* {
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+}
+*:before,
+*:after {
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+      -ms-text-size-adjust: 100%;
+}
+
+body {
+  font-size: 15px; /* 待定 */
+  line-height: 1.5;
+  margin: 0;
+  color: #444554;
+  text-rendering: optimizeLegibility;
+  font-family: "Hiragino Sans GB", sans-serif;
+  background: #f2f2f2;
+  padding-bottom: 50px;
+  -webkit-user-select: none;
+  -moz-user-select: -moz-none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: default;
+  -webkit-touch-callout: none;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+.page-wrapper {
+  position: absolute;
+  width: 100%;
+  top: 0;
+  bottom: 50px;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.page-wrapper > .inner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  min-height: 409px;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+  margin: 0;
+}
+
+button,
+input[type=button],
+input[type=reset],
+input[type=submit] {
+  -webkit-appearance: button;
+}
+
+a {
+  color: #00b85e;
+  outline: none;
+  text-decoration: none;
+}
+
+a:hover,
+a:focus {
+  color: #078c4b;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  border: none;
+  vertical-align: middle;
+}
+
+p {
+  margin: 0 0 10px;
+}
+
+b,
+strong {
+  font-weight: bold;
+}
+
+small,
+.small {
+  font-size: 85%;
+}
+
+ul,
+ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+form,
+figure {
+  margin: 0;
+}
+
+.clearfix:before,
+.clearfix:after {
+  content: " ";
+  display: table;
+}
+
+.clearfix:after {
+  clear: both;
+}
+
+.container {
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.container:before,
+.container:after {
+  content: " ";
+  display: table;
+}
+
+.container:after {
+  clear: both;
+}
+
+.hidden {
+  display: none !important;
+  visibility: hidden !important;
+}
+
+.text-center {
+  text-align: center;
+}
+
+/*========================================================================
+  全局导航
+========================================================================*/
+#global-nav {
+  position: fixed;
+  z-index: 1000;
+  bottom: 0;
+  width: 100%;
+}
+
+#global-nav li {
+  display: table-cell;
+  width: 1%;
+}
+
+#global-nav li a {
+  position: relative;
+  display: block;
+  height: 50px;
+  padding: 33px 0 0;
+  text-align: center;
+  font-size: 12px;
+  text-shadow: 0 1px rgba(0, 0, 0, 0.6);
+  color: #bebebe;
+  background: #677380;
+}
+
+#global-nav li + li a {
+  border-left: 1px solid #262626;
+}
+
+#global-nav li.active a {
+  color: #dedede;
+  background: #3d444c;
+  text-shadow: 0 0 3px rgba(255, 255, 255, 0.5);
+  cursor: default;
+}
+
+#global-nav li a:after {
+  content: "";
+  position: absolute;
+  top: 6px;
+  left: 0;
+  width: 100%;
+  height: 28px;
+  background-repeat: no-repeat;
+  background-position: 50%;
+}
+
+#global-nav li a.nav-sport:after,
+#global-nav li a.nav-trend:after,
+#global-nav li.active a.nav-sport:after,
+#global-nav li.active a.nav-trend:after {
+  background: url(../img/global-nav-icons.png) no-repeat;
+  background-size: 26px 176px;
+}
+
+#global-nav li a.nav-sport:after {
+  background-position: 50% 0;
+}
+
+#global-nav li.active a.nav-sport:after {
+  background-position: 50% -50px;
+}
+
+#global-nav li a.nav-trend:after {
+  background-position: 50% -100px;
+}
+
+#global-nav li.active a.nav-trend:after {
+  background-position: 50% -150px;
+}
+
+/*========================================================================
+  运动
+========================================================================*/
+.data-date {
+  font-size: 17px;
+  text-align: center;
+  padding: 15px 0;
+}
+
+.chart-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+#sport .chart-wrapper {
+  bottom: 100px;
+}
+
+.chart-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+#chart-sport,
+#chart-sleep {
+  padding: 20px 50px;
+}
+
+.nav-tabs {
+  padding-left: 0;
+  margin-bottom: 0;
+  list-style: none;
+  text-align: center;
+}
+
+.nav-tabs > li {
+  display: inline-block;
+}
+
+.nav-tabs > li > a {
+  display: block;
+  line-height: 1.5;
+  padding: 8px 17px;
+  color: #fff;
+  background: #c5c8bf;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+.nav-tabs > li > a:active {
+  background: #a7aaa2;
+}
+
+.nav-tabs > li.active > a {
+  cursor: default;
+}
+
+.nav-tabs > li.active > a[href="#tab-sport"],
+.nav-tabs > li.active > a[href="#tab-trend-sport"] {
+  background: #90d151;
+}
+
+.nav-tabs > li.active > a[href="#tab-sleep"],
+.nav-tabs > li.active > a[href="#tab-trend-sleep"] {
+  background: #3d6fb6;
+}
+
+.tab-content > .tab-pane {
+  display: none;
+  /*
+position: absolute;
+  top: 0;
+  width: 100%;
+  opacity: 0;
+  z-index: -1;
+*/
+  
+}
+
+.tab-content > .tab-pane.active {
+  display: block;
+  /*
+position: relative;
+  opacity: 1;
+  z-index: 1;
+*/
+}
+
+#tab-sport,
+#tab-sleep,
+#tab-trend-sport,
+#tab-trend-sleep {
+  position: absolute;
+  width: 100%;
+  top: 93px;
+  bottom: 0;
+}
+
+.data-list {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 100px;
+  overflow: hidden;
+}
+
+.data-list li {
+  width: 1%;
+  display: table-cell;
+  text-align: center;
+}
+
+.data-list li .label {
+  display: block;
+  width: 100%;
+  color: #fff;
+  line-height: 30px;
+}
+
+.data-list li + li .label {
+  border-left: 1px solid #fff;
+}
+
+.data-list li.data-steps .label {
+  background: #f5752c;
+}
+
+.data-list li.data-calorie .label {
+  background: #f13d6c;
+}
+
+.data-list li.data-distance .label {
+  background: #b34572;
+}
+
+.data-list li.data-deep-sleep .label {
+  background: #277fbe;
+}
+
+.data-list li.data-shallow-sleep .label {
+  background: #74c0f4;
+}
+
+.data-list li.data-no-sleep .label {
+  background: #fcbd49;
+}
+
+.data-list li .data-content {
+  position: relative;
+  display: block;
+  line-height: 70px;
+  height: 70px;
+}
+
+.data-list li + li .data-content:after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 17px;
+  bottom: 17px;
+  border-left: 1px solid #c1c7cf;
+}
+
+.date-nav {
+  position: absolute;
+  z-index: 100;
+  top: 10px;
+  width: 42px;
+  height: 65px;
+  background: url(../img/nav-arrows.png) no-repeat;
+  background-size: 42px 260px;
+  font: 0/0 a;
+  color: transparent;
+  opacity: 1;
+  -webkit-transition: opacity 0.3s;
+  transition: opacity 0.3s;
+}
+
+.date-nav.inactive {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.date-prev {
+  left: 10px;
+  background-position: 0 -130px;
+}
+
+.date-next {
+  right: 10px;
+  background-position: 0 -195px;
+}
+
+.date-prev:active {
+  background-position: 0 0;
+}
+
+.date-next:active {
+  background-position: 0 -65px;
+}
+
+/*========================================================================
+  排行榜
+========================================================================*/
+#ranking {
+  margin: 15px 10px;
+  padding-bottom: 44px;
+}
+
+#ranking > li {
+  height: 64px;
+  line-height: 64px;
+  border: 1px solid #ccc;
+  margin-bottom: 2px;
+  border-radius: 4px;
+  background: #fff;
+}
+
+#ranking .number {
+  display: inline-block;
+  height: 100%;
+  width: 45px;
+  text-align: center;
+  margin-right: 6px;
+  background: #dfdfdf;
+}
+
+#ranking > li:nth-child(1) .number,
+#ranking > li:nth-child(2) .number,
+#ranking > li:nth-child(3) .number {
+  text-indent: -9999px;
+  color: transparent;
+  background-repeat: no-repeat;
+  background-position: 50%;
+  background-size: 22px 29px;
+}
+
+#ranking > li:nth-child(1) .number {
+  background-image: url(../img/ranking_1.png);
+}
+
+#ranking > li:nth-child(2) .number {
+  background-image: url(../img/ranking_2.png);
+}
+
+#ranking > li:nth-child(3) .number {
+  background-image: url(../img/ranking_3.png);
+}
+
+#ranking .avatar {
+  width: 50px;
+  height: 50px;
+  margin-right: 6px;
+  border-radius: 1000px;
+  background: url(http://app1101081259.qzone.qzoneapp.com/lepao-image/userHeadImage/touxiang.jpg) no-repeat center center;
+  background-size: 50px 50px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+#ranking .steps {
+  float: right;
+  margin-right: 15px;
+  color: #f97116;
+}
+
+
+/*========================================================================
+  趋势
+========================================================================*/
+#trend .nav-tabs {
+  margin-top: 14px;
+}
+
+#tab-trend-sport,
+#tab-trend-sleep {
+  top: 132px;
+}
+
+#tab-trend-calorie,
+#tab-trend-steps,
+#tab-trend-distance {
+  position: absolute;
+  width: 100%;
+  top: 0;
+  bottom: 0;
+}
+
+#tab-trend-calorie,
+#tab-trend-steps,
+#tab-trend-distance,
+#tab-trend-sport,
+#tab-trend-sleep,
+#tab-sport,
+#tab-sleep {
+  display: block;
+  z-index: -1;
+  opacity: 0;
+}
+
+#tab-trend-calorie.active,
+#tab-trend-steps.active,
+#tab-trend-distance.active,
+#tab-trend-sport.active,
+#tab-trend-sleep.active,
+#tab-sport.active,
+#tab-sleep.active {
+  z-index: 100;
+  opacity: 1;
+}
+
+.date-range {
+  position: absolute;
+  z-index: 10000;
+  width: 50%;
+  margin: auto;
+  top: 70px;
+  left: 0;
+  right: 0;
+  max-width: 240px;
+  text-align: center;
+  line-height: 43px;
+  -webkit-perspective: 800px;
+}
+
+.date-range .date-current {
+  position: relative;
+  cursor: pointer;
+  background: transparent;
+  -webkit-appearance: none;
+  border: 0;
+  padding: 0;
+  width: 100%;
+}
+
+.date-range .date-current:focus {
+  outline: none;
+}
+
+.date-range .date-current-text {
+  position: relative;
+  display: inline-block;
+  line-height: 1.5;
+  min-width: 94px;
+}
+
+.date-range .date-current-text:after {
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 9px;
+  margin-left: 3px;
+  background: url(../img/date-arrow.png) no-repeat;
+  background-size: 8px 9px;
+  
+}
+
+.date-range .date-current-text:before {
+  content: "";
+  position: absolute;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  height: 1px;
+  background: #898ba0;
+  
+}
+
+.date-range .date-popup {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  border-radius: 5px;
+  box-shadow: 0 6px 9px rgba(0, 0, 0, 0.3);
+  background-color: #fff;
+  background-image: -webkit-linear-gradient(#f2f2f2, #fff);
+  background-image: -moz-linear-gradient(#f2f2f2, #fff);
+  background-image: linear-gradient(#f2f2f2, #fff);
+/*
+  opacity: 0;
+  pointer-events: none;
+  -webkit-transition: 0.2s opacity;
+*/
+}
+
+.date-range .date-popup.show {
+  display: block;
+/*
+  pointer-events: auto;
+  opacity: 1;
+*/
+  
+  -webkit-animation: fall 0.3s both;
+  animation: fall 0.3s both;
+  -webkit-transform-origin: 50% 10px;
+  transform-origin: 50% 0;
+}
+
+@-webkit-keyframes fall {
+  0% {
+    opacity: 0;
+    -webkit-transform: rotateX(25deg);
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fall {
+  0% {
+    opacity: 0;
+    transform:  rotateX(25deg);
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.date-range .date-popup > li {
+  position: relative;
+}
+
+.date-range .date-popup > li + li:after {
+  content: "";
+  position: absolute;
+  left: 35px;
+  right: 35px;
+  border-top: 1px solid #898ba0;
+}
+
+.date-range .date-popup > li.current:before {
+  content: "";
+  position: absolute;
+  left: 40px;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px #90d151, 0 0 0 3px #fff, 0 0 0 4px #90d151;
+}
+
+.data-range-list {
+  text-align: center;
+}
+
+.data-range-list li {
+  display: inline-block;
+  min-width: 75px;
+}
+
+.data-range-list li .label {
+  display: block;
+}
+
+.data-range-list li.data-range-steps .label {
+  color: #f5752c;
+}
+
+.data-range-list li.data-range-calorie .label {
+  color: #f13d6c;
+}
+
+.data-range-list li.data-range-distance .label {
+  color: #b34572;
+}
+
+.data-range-list li .data-content {
+  display: block;
+}
+
+#trend .date-nav {
+  bottom: auto;
+  top: 65px;
+}
+
+.brief-intro {
+  font-size: 85%;
+  text-align: center;
+  margin: 0 0 10px;
+}
+
+.nav-tabs-trend-items {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.nav-tabs-trend-items li {
+  display: table-cell;
+  width: 1%;
+}
+
+.nav-tabs-trend-items li + li {
+  border-left: 1px solid #fff;
+}
+
+.nav-tabs-trend-items li a:after {
+  content: "";
+  position: absolute;
+  z-index: 100;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  pointer-events: none;
+}
+
+.tab-content-trend-items {
+  position: absolute;
+  top: 155px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.nav-tabs-trend-items li.active a[href="#tab-trend-steps"]:after,
+.nav-tabs > li.active > a[href="#tab-trend-steps"] {
+  background: #f5752c;
+}
+
+.nav-tabs-trend-items li.active a[href="#tab-trend-calorie"]:after,
+.nav-tabs > li.active > a[href="#tab-trend-calorie"] {
+  background: #f13d6c;
+}
+
+.nav-tabs-trend-items li.active a[href="#tab-trend-distance"]:after,
+.nav-tabs > li.active > a[href="#tab-trend-distance"] {
+  background: #b34572;
+}
+
+
+/*========================================================================
+  睡眠趋势
+========================================================================*/
+.sleep-trend-title {
+  font-weight: normal;
+  font-size: 15px;  
+  line-height: 38px;
+  color: #fff;
+  background: #277fbe;
+  text-align: center;
+  
+}
+
+.data-range-list li.data-range-deep-sleep .label {
+  color: #277fbe;
+}
+
+.data-range-list li.data-range-shallow-sleep .label {
+  color: #74c0f4;
+}
+
+.data-range-list li.data-range-no-sleep .label {
+  color: #fcbd49;
+}
+
+.data-range-list li .data-content {
+  font-size: 16px;
+}
+
+.data-range-list li .data-content small {
+  display: block;
+  font-size: 80%;
+}
+
+#chart-trend-sleep {
+  top: 145px;
+}

@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+<meta charset="utf-8">
+<title>个人信息</title>
+<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+<link rel="stylesheet" href="css/setup.css">
+<script src="js/jquery-2.1.0.min.js"></script>
+<script src="js/fastclick.js"></script>
+<script>
+$(function() {
+  FastClick.attach(document.body);
+
+  var weixinId,
+      defaultSex = 1,
+      defaultHeight = $('[name=height]').data('default'),
+      defaultWeight = $('[name=weight]').data('default'),
+      defaultAge = $('[name=age]').data('default');
+
+  // 获取url中的微信id
+  (function getWeixinId() {
+    var qs = location.search.length > 0 ? location.search.slice(1) : '';
+    if(qs.indexOf('weixinId') > -1) {
+      weixinId = qs.match(/weixinId=([^&]*)/)[1];
+    }
+  })();
+
+  // 设置微信id
+  $('[name=weixinId]').val(weixinId);
+
+  // 获取原数据（设置）
+  $.getJSON('http://114.255.24.42/order/h/v2/userSettings/getSetInfo', {weixinId: weixinId}, function(data) {
+    if(data.height > 0) {
+      data.sex === 0 ? $('#input-girl').prop('checked', true) : $('#input-boy').prop('checked', true);
+      $('[name=height]').val(data.height);
+      $('[name=weight]').val(data.weight);
+      $('[name=age]').val(data.age);
+    } else {
+      $('#input-boy').prop('checked', true);
+      $('[name=height]').val(defaultHeight);
+      $('[name=weight]').val(defaultWeight);
+      $('[name=age]').val(defaultAge);
+    }
+    evaluateBMI();
+  });
+
+  // 表单提交
+  $('#personal-info').on('submit', function(event) {
+    event.preventDefault();
+    $submitBtn = $('[type=submit]', this).prop('disabled', true).html('保存中...');
+    var formValues = $(this).serialize(),
+        formAction = $(this).attr('action');
+    $.post(formAction, formValues, function(data) {
+      $submitBtn.prop('disabled', false).html('保 存');
+      if(data.ret === 1) {
+        $('.alert-success').addClass('show').on('webkitAnimationEnd animationend', function() {
+          $(this).removeClass('show');
+        });
+        /*
+$('.alert-success').removeClass('hidden').addClass('in');
+        setTimeout(function() {
+          $('.alert-success').addClass('hidden').removeClass('in');
+        }, 1000)
+*/
+      } else {
+        // 错误提示
+      }
+    }, 'json');
+  });
+
+  // 表单验证
+  $('.input-number').each(function() {
+    var $decrease = $('.number-decrease', this),
+        $increase = $('.number-increase', this),
+        $numberField = $('.number-field', this),
+        min = Number($numberField.attr('min')),
+        max = Number($numberField.attr('max')),
+        defaultValue = $numberField.data('default');
+    // 减按钮
+    $decrease.on('click', function() {
+      if($numberField[0].value <= min) return;
+      $numberField.val(--$numberField[0].value);
+      evaluateBMI();
+    });
+    // 加按钮
+    $increase.on('click', function() {
+      if($numberField[0].value >= max) return;
+      $numberField.val(++$numberField[0].value);
+      evaluateBMI();
+    });
+    // 失焦时
+    $numberField.on('change', function(event) {
+      if(event.target.value < min) event.target.value = min;
+      if(event.target.value > max) event.target.value = max;
+    });
+    // 输入非数字重置为默认值
+    $numberField.on('change', function(event) {
+      var pattern = /\D/,
+          text = event.target.value;
+      // input type number 非合法值时，value取出来的值是 空字符串
+      if(text === '' || pattern.test(text)) {
+        event.target.value = defaultValue;
+      }
+    });
+  });
+
+  // BMI计算
+  function evaluateBMI() {
+    var height = Number($('[name=height]').val()),
+        weight = Number($('[name=weight]').val()),
+        bmi = Number((weight/Math.pow(height/100, 2)).toFixed(1)),
+        bmiInfo;
+    switch (true) {
+      case bmi < 18.5:
+        bmiInfo = '偏瘦';
+        break;
+      case bmi >= 18.5 && bmi < 24:
+        bmiInfo = '标准';
+        break;
+      case bmi >= 24 && bmi < 27:
+        bmiInfo = '偏重';
+        break;
+      case bmi >= 27 && bmi < 30:
+        bmiInfo = '轻度肥胖';
+        break;
+      case bmi >= 30 && bmi < 35:
+        bmiInfo = '中度肥胖';
+        break;
+      case bmi >= 35:
+        bmiInfo = '重度肥胖';
+        break;
+    }
+    $('#bmi').html(bmi);
+    $('#bmi-info').html(bmiInfo);
+  }
+
+  $('.input-number .form-control').on('change', function() {
+    evaluateBMI();
+  });
+
+})
+</script>
+</head>
+<body>
+	<div class="container">
+  	<form id="personal-info" method="post" action="http://114.255.24.42/order/h/v2/userSettings/setSetInfo">
+  	  <input type="hidden" name="weixinId" value="">
+    	<ul class="control-horizontal" style="width: 70%; margin-left: auto; margin-right: auto">
+      	<li>
+      	  <input type="radio" id="input-boy" name="sex" value="1">
+        	<label for="input-boy">男生</label>
+      	</li>
+      	<li>
+      	  <input type="radio" id="input-girl" name="sex" value="0">
+        	<label for="input-girl">女生</label>
+      	</li>
+    	</ul>
+
+    	<ul class="list-view list-view-sm">
+      	<li>
+      	  <div class="label-group">
+        	  <label class="control-label">身高</label>
+          	<div class="input-number input-group">
+          	  <span class="input-group-btn">
+            	  <button type="button" class="btn btn-default number-decrease" tabindex="-1">-</button>
+          	  </span>
+            	<input type="number" class="form-control number-field" min="50" max="300" data-default="175" name="height" value="" pattern="\d*">
+            	<span class="input-group-btn">
+              	<button type="button" class="btn btn-default number-increase" tabindex="-1">+</button>
+            	</span>
+          	</div>
+          	<span class="unit">厘米</span>
+        	</div>
+      	</li>
+      	<li>
+        	<div class="label-group">
+        	  <label class="control-label">体重</label>
+          	<div class="input-number input-group">
+          	  <span class="input-group-btn">
+            	  <button type="button" class="btn btn-default number-decrease" tabindex="-1">-</button>
+          	  </span>
+            	<input type="number" class="form-control number-field" min="10" max="300" data-default="70" name="weight" value="" pattern="\d*">
+            	<span class="input-group-btn">
+              	<button type="button" class="btn btn-default number-increase" tabindex="-1">+</button>
+            	</span>
+          	</div>
+          	<span class="unit">公斤</span>
+        	</div>
+      	</li>
+      	<li>
+        	<div class="label-group">
+        	  <label class="control-label">年龄</label>
+          	<div class="input-number input-group">
+          	  <span class="input-group-btn">
+            	  <button type="button" class="btn btn-default number-decrease" tabindex="-1">-</button>
+          	  </span>
+            	<input type="number" class="form-control number-field" min="0" max="120" data-default="25" name="age" value="" pattern="\d*">
+            	<span class="input-group-btn">
+              	<button type="button" class="btn btn-default number-increase" tabindex="-1">+</button>
+            	</span>
+          	</div>
+          	<span class="unit">岁</span>
+        	</div>
+      	</li>
+    	</ul>
+
+    	<p class="help-block text-center h5">BMI指数 <strong id="bmi" class="text-primary h4">-</strong> ，你的体型属于 <strong id="bmi-info" class="text-primary h4">-</strong></p>
+
+    	<div class="form-group"><button type="submit" class="btn btn-primary btn-lg btn-block">保 存</button></div>
+    </form>
+
+    <div class="alert-success">保存成功</div>
+	</div>
+</body>
+</html>

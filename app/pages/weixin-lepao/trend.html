@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="initial-scale=1, user-scalable=no">
+<title>乐跑－趋势</title>
+<link rel="stylesheet" href="css/style.css">
+<script src="js/jquery-2.1.0.min.js"></script>
+<script src="js/echarts-plain.js"></script>
+<script src="js/trend.js"></script>
+</head>
+<body id="trend">
+  <nav id="global-nav">
+    <ul>
+      <li><a href="daily-data.html" data-href="daily-data.html" class="nav-sport">运动</a></li>
+      <li class="active"><a href="trend.html" data-href="trend.html" class="nav-trend">趋势</a></li>
+    </ul>
+  </nav>
+  <div class="page-wrapper">
+    <div class="inner">
+      <div class="date-range">
+        <button type="button" class="date-current">
+          <span class="date-current-text">今天</span>
+        </button>
+        <ul class="date-popup">
+          <li class="date-popup-current">今天</li>
+          <li class="date-range-day10">10天</li>
+          <li class="date-range-day20">20天</li>
+          <li class="date-today current">今天</li>
+        </ul>
+      </div>
+      <a href="#" class="date-nav date-prev">上一日</a>
+      <a href="#" class="date-nav date-next">下一日</a>
+      <ul class="nav-tabs">
+        <li class="active"><a href="#tab-trend-sport">运动数据</a></li>
+        <li><a href="#tab-trend-sleep">睡眠数据</a></li>
+      </ul>
+      <div class="tab-content">
+        <div class="tab-pane active" id="tab-trend-sport">
+          <p class="brief-intro">此期间您累积使用乐跑运动</p>
+          <ul class="data-range-list">
+            <li class="data-range-steps">
+              <span class="label">累计</span>
+              <span class="data-content">0</span>
+              <span class="unit">步</span>
+            </li>
+            <li class="data-range-calorie">
+              <span class="label">消耗</span>
+              <span class="data-content">0</span>
+              <span class="unit">大卡</span>
+            </li>
+            <li class="data-range-distance">
+              <span class="label">里程</span>
+              <span class="data-content">0</span>
+              <span class="unit">米</span>
+            </li>
+          </ul>
+          <ul class="nav-tabs nav-tabs-trend-items">
+            <li class="active"><a href="#tab-trend-steps">步数</a></li>
+            <li><a href="#tab-trend-calorie">卡路里</a></li>
+            <li><a href="#tab-trend-distance">里程</a></li>
+          </ul>
+          <div class="tab-content tab-content-trend-items">
+            <div class="tab-pane active" id="tab-trend-steps">
+              <div class="chart-wrapper">
+                <div id="chart-steps" class="chart-content"></div>
+              </div>
+            </div>
+            <div class="tab-pane" id="tab-trend-calorie">
+              <div class="chart-wrapper">
+                <div id="chart-calorie" class="chart-content"></div>
+              </div>
+            </div>
+            <div class="tab-pane" id="tab-trend-distance">
+              <div class="chart-wrapper">
+                <div id="chart-distance" class="chart-content"></div>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+        
+        <div class="tab-pane" id="tab-trend-sleep">
+          <p class="brief-intro">此期间您累积使用乐跑运动</p>
+          <ul class="data-range-list">
+            <li class="data-range-deep-sleep">
+              <span class="label">深睡</span>
+              <span class="data-content">0小时<small>0分钟</small></span>
+            </li>
+            <li class="data-range-shallow-sleep">
+              <span class="label">浅睡</span>
+              <span class="data-content">0小时<small>0分钟</small></span>
+            </li>
+            <li class="data-range-no-sleep">
+              <span class="label">清醒</span>
+              <span class="data-content">0小时<small>0分钟</small></span>
+            </li>
+          </ul>
+          <h2 class="sleep-trend-title">深度睡眠趋势</h2>          
+          <div class="chart-wrapper" id="chart-trend-sleep">
+            <div id="chart-trend-sleep" class="chart-content"></div>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+<meta charset="utf-8">
+<title>乐跑 - 排行榜</title>
+<meta name="viewport" content="initial-scale=1, user-scalable=no">
+<link rel="stylesheet" href="css/style.css">
+<script src="js/jquery-2.1.0.min.js"></script>
+<script>
+  $(function() {
+    var begin = 0,
+        offset = 30,
+        $ranking = $('#ranking'),
+        loading = false;
+
+    function loadRankingData() {
+      loading = true;
+      var time = Date.now();
+      $.ajax({
+        url: 'http://www.lepao.com/h/v2/ranking/obtainRankingList',
+        dataType: 'json',
+        cache: false,
+        data: {
+          "begin": begin,
+          "offset": offset,
+          "time": time,
+          "genus": "web"
+        }
+      }).then(function(data) {
+        begin += offset;
+        var html = "";
+        $.each(data.userRankingList, function(index, person) {
+          var imgURL = person.headImage;
+          if(imgURL === null || imgURL === "") {
+            imgURL = 'http://app1101081259.qzone.qzoneapp.com/lepao-image/userHeadImage/touxiang.jpg'; // 默认头像
+          } else if(imgURL.indexOf('http://') === -1) {
+            imgURL = 'http://app1101081259.qzone.qzoneapp.com/lepao-image/userHeadImage/' + imgURL;
+          }
+          html += '<li>';
+          html += '<span class="number">' + person.id +'</span>';
+          html += '<img class="avatar" src="' + imgURL + '">';
+          html += '<span class="username">' + person.nickName + '</span>';
+          html += '<span class="steps">' + person.steps +'<small>步</small></span>';
+          html += '</li>';
+        })
+        $ranking.append(html);
+        loading = false;
+      })
+    }
+
+    loadRankingData();
+
+    $(window).on('scroll touchmove resize', function() {
+      if(loading) return;
+      if($(document).scrollTop() + $(window).height() >= $(document).height() - 300) {
+        loadRankingData();
+      }
+    });
+
+    (function() {
+      var time, weixinId;
+
+      // 获取 url 中的 time 和 weixinId 参数
+      function getTimeAndWeixinIdArgs() {
+        var qs = location.search.length > 0 ? location.search.slice(1) : '';
+        if(qs.indexOf('weixinId') > -1 && qs.indexOf('time') > -1) {
+          time = parseInt(qs.match(/time=([^&]*)/)[1]);
+          weixinId = qs.match(/weixinId=([^&]*)/)[1];
+        }
+      }
+
+      // 改变全局导航的url
+      function changeGlobalNav() {
+        $('#global-nav a').each(function() {
+          var href = $(this).attr('href');
+          href += '?time=' + time + '&weixinId=' + weixinId;
+          $(this).attr('href', href);
+        })
+      }
+      getTimeAndWeixinIdArgs();
+      changeGlobalNav();
+    })();
+
+
+
+
+
+  })
+</script>
+</head>
+<body>
+  <nav id="global-nav">
+    <ul>
+      <li><a href="daily-data.html" class="nav-sport">运动</a></li>
+      <li class="active"><a href="ranking.html" class="nav-ranking">排行榜</a></li>
+    </ul>
+  </nav>
+
+  <ol id="ranking"></ol>
+
+</body>
+</html>

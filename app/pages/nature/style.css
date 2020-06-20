@@ -1,0 +1,106 @@
+/* RESET */
+html,body,div,ul,ol,li,dl,dt,dd,h1,h2,h3,h4,h5,h6,pre,form,p,blockquote,fieldset,input,abbr,article,aside,command,details,figcaption,figure,footer,header,hgroup,mark,meter,nav,output,progress,section,summary,time { margin: 0; padding: 0; }
+h1,h2,h3,h4,h5,h6,pre,code,address,caption,cite,code,em,strong,th,figcaption { font-size: 1em; font-weight: normal; font-style: normal; }
+fieldset,iframe { border: none; }
+caption,th { text-align: left; }
+table { border-collapse: collapse; border-spacing: 0; }
+article,aside,footer,header,hgroup,nav,section,figure,figcaption { display: block; }
+
+/* GENERAL */
+#logo img, header, nav ul a, #home img, .inner, .wrapper, article, #home h1, #cloudTop, #ufo, .sea, .fancybox span, .fancybox-close{ _behavior: url(scripts/iepngfix.htc); }
+html { min-width: 960px; }
+body { color: white; background: black; font: 16px/1.5 "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana , sans-serif; _background-attachment: fixed; _background-image: url(about:blank); }
+.selfclear { zoom: 1; }
+.selfclear:after { content: '.'; display: block; height: 0; clear: both; visibility: hidden; }
+img { border: 0; vertical-align: top; text-align: left; }
+a { outline: none; }
+h1 { color: #fff; font-size: 66px; font-weight: bold; font-family: "Lucida Grande", SIMHEI; }
+.inner { height: 100%; }
+.wrapper { width: 960px; height: 100%; margin: 0 auto; }
+article { padding: 85px 325px 0 135px; }
+
+/* NAV */
+header { position: fixed; z-index: 100; width: 100%; margin-top: 30px; background: url(images/nav-bg.png) repeat-x; clear: both; _position: absolute; _top:expression(offsetParent.scrollTop); _left:expression(offsetParent.scrollLeft); }
+nav { position: relative; width: 960px; margin: 0 auto; padding: 10px 0; }
+nav #logo { margin: -30px 0 0 10px; height: 95px; position: absolute; left: 0;
+	-webkit-transition: all 0.15s ease-out;
+	-moz-transition: all 0.15s ease-out;
+	-o-transition: all 0.15s ease-out;
+	transition: all 0.15s ease-out; }
+nav #logo:hover { -webkit-transform: rotate(30deg); -moz-transform: rotate(30deg); -o-transform: rotate(30deg); transform: rotate(30deg); }
+nav ul { list-style: none; float: left; margin-left: 135px; display: inline; }
+nav li { float: left; height: 30px; margin-right: 30px; position: relative; overflow: hidden; }
+nav ul a { text-indent: -9999px; position: relative; display: block; width: 103px; height: 77px; cursor: pointer;
+	background: url(images/nav-text.png) no-repeat;
+	-webkit-transition: all .17s ease-out;
+	-moz-transition: all .17s ease-out;
+	-o-transition: all .17s ease-out;
+	transition: all .17s ease-out; }
+nav .about { background-position: 0 2px; }
+nav .human { background-position: -160px 2px; }
+nav .nature { background-position: -320px 2px;}
+nav .contact { background-position: -480px 2px; }
+nav ul a:hover, nav ul .current a { top: -50px; zoom: 1; }
+nav #altitude { float: right; height: 30px; font-size: 16px; line-height: 1; display: none; }
+nav #altitude span { font-size: 26px; font-family: Arial, sans-serif; width: 80px; text-align: right; padding: 3px 10px 0 0; display: inline-block; *display: inline; zoom: 1;  }
+
+/* CONTENT */
+#home { height: 1904px; background: url(images/home-bg.png) repeat-x 50% 0; }
+#home .inner { background: url(images/star-bottom.png) no-repeat 50% 0; }
+#home .wrapper { width: 100%; background: url(images/star-top.png) no-repeat 50% 0; }
+#home #ufo { height: 100%; background: url(images/ufo.png) no-repeat 80% 800px; }
+#home h1 { position: relative; text-indent: -9999px; height: 800px; background: url(images/no-killing.png) no-repeat 50% 350px; }
+
+#about { height: 2130px; background: url(images/about-bg.png); }
+#about .inner { background: url(images/cloud-bottom.png) no-repeat 50% 50px; }
+#about #cloudTop { height: 100%; background: url(images/cloud-top.png) no-repeat 50% 550px; }
+
+#human { height: 898px; background: url(images/human-bg.png) repeat-x 50% 0; }
+#human .inner { background: url(images/migrant.png) no-repeat 50% 300px; }
+#human .wrapper { background: url(images/balloon.png) no-repeat 100% 300px; }
+
+#nature { height: 1787px; background: url(images/nature-bg.png) 50% 0; }
+#nature article { padding-right: 0; }
+#nature h1 { margin-left: -8px; }
+#nature p { margin: 0 0 25px; }
+#nature .fancybox { float: left; position: relative; margin: 0 8px 8px 0; padding: 8px; border: 1px solid #dadada; background: white; border-radius: 2px; cursor: pointer; }
+#nature .black, #nature .zoom { position: absolute; left: 9px; top: 9px; opacity: 0; filter: alpha(opacity=0);
+	-webkit-transition: all 0.2s ease-out;
+	-moz-transition: all 0.2s ease-out;
+	-o-transition: all 0.2s ease-out;
+	transition: all 0.2s ease-out; }
+#nature .black { background: black; }
+#nature .fancybox:hover .black { opacity: 0.5; filter: alpha(opacity=50); }
+#nature .zoom { background: url(images/zoom.png) no-repeat 50% 50%; _background-image: url(images/zoom-ie6.png); }
+#nature .fancybox:hover .zoom { opacity: 1; filter: alpha(opacity=100); }
+#nature img { float: left; background: black; }
+
+.sea {  padding: 247px 0 0; margin: -247px 0 0; background: url(images/sea-top.png) no-repeat 50% 0; }
+.sea .inner { background: url(images/sea-bg.png) repeat-x 50% 0; }
+.sea .wrapper { padding: 300px 0 0; }
+#contact { padding: 85px 325px 150px 135px; }
+#contact form { margin: 40px 0 0; }
+#contact form div { margin: 20px 0; }
+#contact label { display: block; width: 350px; margin: 0 0 10px; }
+#contact input, #contact textarea { width: 345px; padding: 10px; font-size: 18px; border: none;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	-webkit-box-shadow: inset 0 1px 2px rgba(0,0,0,.4);
+	-moz-box-shadow: inset 0 1px 2px rgba(0,0,0,.4);
+	box-shadow: inset 0 1px 2px rgba(0,0,0,.4); }
+#contact textarea { height: 150px; resize: none; overflow: auto; }
+#contact #submit {
+	-webkit-appearance: none;
+	color: white; width: 103px; font-weight: bold; cursor: pointer; background-color: #0085f2;
+	-webkit-box-shadow: 0 1px 3px rgba(0,0,0,.15);
+	-moz-box-shadow: 0 1px 3px rgba(0,0,0,.15);
+	box-shadow: 0 1px 3px rgba(0,0,0,.15);
+	-webkit-transition: all 0.15s ease-out;
+	-moz-transition: all 0.15s ease-out;
+	-o-transition: all 0.15s ease-out;
+	transition: all 0.15s ease-out; }
+#contact #submit:hover { opacity: 0.85; filter: alpha(opacity=85); }
+
+
+footer { font-size: 12px; text-align: center; margin: -50px 0 0; }

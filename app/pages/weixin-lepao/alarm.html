@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+<meta charset="utf-8">
+<title>闹钟</title>
+<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+<link rel="stylesheet" href="css/setup.css">
+<script src="js/modernizr.custom.05740.js"></script>
+<script src="js/jquery-2.1.0.min.js"></script>
+<script src="js/fastclick.js"></script>
+<script>
+$(function() {
+  FastClick.attach(document.body);
+
+  var weixinId,
+      alarmTime = [],
+      state = [],
+      frequency = [];
+
+  history.replaceState(null, '');
+
+  // 获取url中的微信id
+  (function getWeixinId() {
+    var qs = location.search.length > 0 ? location.search.slice(1) : '';
+    if(qs.indexOf('weixinId') > -1) {
+      weixinId = qs.match(/weixinId=([^&]*)/)[1];
+    }
+  })();
+
+  // 设置微信id
+  $('[name=weixinId]').val(weixinId);
+
+
+  // 获取原数据（设置）
+  $.getJSON('http://114.255.24.42/order/h/v2/userSettings/getAlarmClocks', {weixinId: weixinId}, function(data) {
+    /*
+     * state为0是关闭，为1是打开
+     * hour为小时， min为分钟
+     *
+    */
+
+    // 初初化时间
+    data.alarmclocks.forEach(function(v, i) {
+      var hour = v.hour < 10 ? '0' + v.hour : v.hour,
+          minute = v.min < 10 ? '0' + v.min : v.min;
+      alarmTime.push(hour + ':' + minute);
+      state.push(v.state)
+      frequency.push(('000000' + v.frequency.toString(2)).slice(-7));
+
+    });
+
+    // 插入时间
+    $('.alarm-time').each(function(i) {
+      $(this).html(alarmTime[i]);
+    });
+    $('.input-time').each(function(i) {
+      $(this).val(alarmTime[i]);
+    });
+
+    // 插入开关状态
+    $('.input-state').each(function(i) {
+      $(this).prop('checked', state[i] ? true : false);
+    });
+
+    // 插入星期选中状态
+    $('.week-container').each(function(i) {
+      $('[type="checkbox"]', this).each(function(j) {
+        $(this).prop('checked', Number(frequency[i].split('').reverse()[j]) === 1 ? true : false);
+      });
+    });
+
+    // 插入星期文字
+    $('.alarm-week').each(function(i) {
+      $(this).html(getWeekText(i));
+    });
+
+    initInputTime();
+  });
+
+  // 表单提交
+  $('#alarm').on('submit', function(e) {
+    e.preventDefault();
+    console.log(alarmTime)
+    $submitBtn = $('[type=submit]', this).prop('disabled', true).html('保存中...');
+    var formValues = {
+      weixinId: weixinId,
+      status1: $('[name="state1"]').prop('checked') ? 1 : 0,
+      status2: $('[name="state2"]').prop('checked') ? 1 : 0,
+      status3: $('[name="state3"]').prop('checked') ? 1 : 0,
+      hour1: $('.alarm-time').eq(0).html().split(':')[0],
+      min1: $('.alarm-time').eq(0).html().split(':')[1],
+      hour2: $('.alarm-time').eq(1).html().split(':')[0],
+      min2: $('.alarm-time').eq(1).html().split(':')[1],
+      hour3: $('.alarm-time').eq(2).html().split(':')[0],
+      min3: $('.alarm-time').eq(2).html().split(':')[1],
+      frequency1: parseInt(frequency[0], 2),
+      frequency2: parseInt(frequency[1], 2),
+      frequency3: parseInt(frequency[2], 2)
+    },
+        formAction = $(this).attr('action');
+        console.log(formValues);
+    $.post(formAction, formValues, function(data) {
+    console.log(data)
+      $submitBtn.prop('disabled', false).html('保 存');
+      if(data.ret === 1) {
+        $('.alert-success').addClass('show').on('webkitAnimationEnd animationend', function() {
+          $(this).removeClass('show');
+        });
+      } else {
+        // 错误提示
+      }
+    }, 'json');
+  });
+
+  // 获取星期文字
+  function getWeekText(i) {
+    var freq = frequency[i],
+        weekText,
+        a = [];
+    if(freq === '1000001') {
+      weekText = '周末'
+    } else if(freq === '0111110') {
+      weekText = '工作日'
+    } else if(freq === '1111111') {
+      weekText = '每天'
+    } else {
+      if(freq[5] === '1') a.push('周一');
+      if(freq[4] === '1') a.push('周二');
+      if(freq[3] === '1') a.push('周三');
+      if(freq[2] === '1') a.push('周四');
+      if(freq[1] === '1') a.push('周五');
+      if(freq[0] === '1') a.push('周六');
+      if(freq[6] === '1') a.push('周日');
+      weekText = a.join(' ');
+    }
+    return weekText;
+  }
+
+
+  // get weekday code by 0x
+  function getCodeByWeekday(day) {
+		//alert(day);
+  	switch (day) {
+  	 	case 0:// 周日
+        return 1;//  00000001
+  	 	case 1:
+  	 		return 2;//  00000010
+  	 	case 2:
+  	 		return 4;//  00000100
+  	 	case 3:
+  	 		return 8;//  00001000
+  	 	case 4:
+  	 		return 16;// 00010000
+  	 	case 5:
+  	 		return 32;// 00100000
+  	 	case 6:
+  	 		return 64;// 01000000
+  	}
+  }
+
+  // 映射日期到首页
+  $(document).on('change', '.week-container [type="checkbox"]', function() {
+    var $weekTextWrapper = $('[href=#' + $(this).closest('.page').attr('id') + '] .alarm-week'),
+        weekArray = [],
+        sum,
+        index = $(this).closest('.week-container').index('.week-container');
+    $(this).closest('.week-container').find('[type="checkbox"]:checked').each(function() {
+      weekArray.push(getCodeByWeekday(parseInt(this.value)));
+    });
+    sum = weekArray.reduce(function(prev, cur) {
+      return prev | cur
+    });
+    frequency[index] = ('000000' + sum.toString(2)).slice(-7);
+    console.log(frequency);
+    $weekTextWrapper.html(getWeekText(index));
+  });
+
+
+  // 初始化输入框
+  function initInputTime() {
+    if (Modernizr.touch && Modernizr.inputtypes.time) {
+      $(document).on('change blur', '[type=time]', function(e) {
+        var defaultValue = $(e.target).data('default');
+        if(e.target.value === '') {
+          e.target.value = defaultValue;
+        }
+        // 映射到首页
+        $('[href=#' + $(this).closest('.page').attr('id') + '] .alarm-time').html(e.target.value);
+      });
+    } else {
+      $('[type=time]').each(function() {
+        var id = $(this).attr('name'),
+            hour = this.value ? this.value.split(':')[0] : '',
+            minute = this.value ? this.value.split(':')[1] : '';
+        $(this).hide().after(fallbackInputTime(id, hour, minute));
+      });
+      $(document).on('change', '.input-time-group > .input-time', function() {
+        var $timeGroup = $(this).closest('.input-time-group'),
+            name = $timeGroup.attr('id'),
+            hour = $timeGroup.find('.input-time').eq(0).val(),
+            minute = $timeGroup.find('.input-time').eq(1).val(),
+            time = hour + ':' + minute;
+        $('[name=' + name + ']').val(time);
+        // 映射到首页
+        $('[href=#' + $(this).closest('.page').attr('id') + '] .alarm-time').html(time);
+      });
+    }
+  }
+
+
+  // 回退 input="time" 为 select
+  function fallbackInputTime(id, hour, minute) {
+    var selectHour = document.createElement('select'),
+        selectMinute = document.createElement('select'),
+        $inputGroup = $('<span class="input-time-group"></span>'),
+        $colon = $('<span class="time-colon">:</span>'),
+        hour = hour ? parseInt(hour) : 0,
+        minute = minute ? parseInt(minute) : 0;
+    selectHour.className = 'input-time';
+    selectMinute.className = 'input-time';
+    for(var i = 0; i < 24; i++) {
+      var optionHour = new Option(i < 10 ? '0' + i : i);
+      if(i === hour) {
+        optionHour.selected = true;
+      }
+      selectHour.add(optionHour, undefined);
+    }
+    for(var j = 0; j < 60; j++) {
+      var optionMinute = new Option(j < 10 ? '0' + j : j);
+      if(j === minute) {
+        optionMinute.selected = true;
+      }
+      selectMinute.add(optionMinute, undefined);
+    }
+    if(id)  {
+      $inputGroup.attr('id', id);
+    }
+    $inputGroup.append(selectHour).append($colon).append(selectMinute);
+    return $inputGroup;
+  }
+
+
+  // 页面滑动
+  $(document).on('click', '.list-view > li > a', function(e) {
+    e.preventDefault();
+    var href = $(this).attr('href'),
+        $scrollOut = $(this).closest('.page'),
+        $scrollIn = $(href);
+
+    history.pushState({href: href}, '');
+    $scrollOut.addClass('scroll-out');
+    $scrollIn.addClass('scroll-in');
+  });
+  // 后退，前进按钮
+  window.addEventListener('popstate', function(e) {
+    if(event.state === null) {
+      $('.scroll-in').removeClass('scroll-in');
+      $('.scroll-out').removeClass('scroll-out');
+    } else {
+      $('[href="' + e.state.href + '"]').closest('.page').addClass('scroll-out');
+      $(e.state.href).addClass('scroll-in');
+    }
+  }, false);
+
+
+
+})
+</script>
+</head>
+<body>
+<div class="page-wrapper">
+<form id="alarm" method="post" action="http://114.255.24.42/order/h/v2/userSettings/setAlarmClocks">
+  <div class="page home">
+  	<div class="container">
+
+    	  <input type="hidden" name="weixinId" value="">
+
+      	<ul class="list-view list-view-md alarn-list">
+        	<li class="has-sub">
+        	  <div class="switch">
+          	  <input class="input-state" id="input-state1" type="checkbox" name="state1" value="1">
+          	  <label for="input-state1"></label>
+        	  </div>
+          	<a href="#alarm-time1">
+          	  <span class="icon-has-sub"></span>
+            	<div class="alarm-time" data-default="07:00">00:00</div>
+            	<div class="alarm-week" data-default="工作日"></div>
+          	</a>
+        	</li>
+        	<li class="has-sub">
+        	  <div class="switch">
+          	  <input class="input-state" id="input-state2" type="checkbox" name="state2" value="1">
+          	  <label for="input-state2"></label>
+        	  </div>
+          	<a href="#alarm-time2">
+          	  <span class="icon-has-sub"></span>
+            	<div class="alarm-time" data-default="08:00">00:00</div>
+            	<div class="alarm-week" data-default="周末"></div>
+          	</a>
+        	</li>
+        	<li class="has-sub">
+        	  <div class="switch">
+          	  <input class="input-state" id="input-state3" type="checkbox" name="state3" value="1">
+          	  <label for="input-state3"></label>
+        	  </div>
+          	<a href="#alarm-time3">
+          	  <span class="icon-has-sub"></span>
+            	<div class="alarm-time" data-default="09:00">00:00</div>
+            	<div class="alarm-week" data-default="周末"></div>
+          	</a>
+        	</li>
+      	</ul>
+
+      	<div class="form-group"><button type="submit" class="btn btn-primary btn-lg btn-block">保 存</button></div>
+
+
+      	<div class="alert-success">保存成功</div>
+  	</div>
+  </div>
+
+  <div class="page" id="alarm-time1">
+    <div class="container">
+      <div class="text-center ptb15">
+        <input type="time" class="input-time" data-default="07:00" name="time1" value="00:00">
+      </div>
+      <ul class="list-view list-view-sm checklist week-container">
+        <li>
+          <label>
+            <span class="label-text">每周日</span>
+            <input type="checkbox" name="sunday" value="0">
+            <span class="icon-listview-right"></span>
+          </label>
+        </li>
+        <li>
+          <label>
+            <span class="label-text">每周一</span>
+            <input type="checkbox" name="monday" value="1">
+            <span class="icon-listview-right"></span>
+          </label>
+        </li>
+        <li>
+          <label>
+            <span class="label-text">每周二</span>
+            <input type="checkbox" name="tuesday" value="2">
+            <span class="icon-listview-right"></span>
+          </label>
+        </li>
+        <li>
+          <label>
+            <span class="label-text">每周三</span>
+            <input type="checkbox" name="wednesday" value="3">
+            <span class="icon-listview-right"></span>
+          </label>
+        </li>
+        <li>
+          <label>
+            <span class="label-text">每周四</span>
+            <input type="checkbox" name="thursday" value="4">
+            <span class="icon-listview-right"></span>
+          </label>
+        </li>
+        <li>
+          <label>
+            <span class="label-text">每周五</span>
+            <input type="checkbox" name="friday" value="5">
+            <span class="icon-listview-right"></span>
+          </label>
+        </li>
+        <li>
+          <label>
+            <span class="label-text">每周六</span>
+            <input type="checkbox" name="saturday" value="6">
+            <span class="icon-listview-right"></span>
+          </label>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="page" id="alarm-time2">
+    <div class="container">
+      <div class="text-center ptb15">
+        <input type="time" class="input-time" data-default="07:00" name="time2" value="00:00">
+      </div>
+      <ul class="list-view list-view-sm checklist week-container">
+        <li>
+          <label>
+            <span class="label-text">每周日</span>
+            <input type="checkbox" name="sunday" value="0">
+            <span class="icon-listview-right"></span>
+          </label>
+        </li>
+        <li>
+          <label>
+            <span class="label-text">每周一</span>
+            <input type="checkbox" name="monday" value="1">
+            <span class="icon-listview-right"></span>
+          </label>
+        </li>
+        <li>
+          <label>
+            <span class="label-text">每周二</span>
+            <input type="checkbox" name="tuesday" value="2">
+            <span class="icon-listview-right"></span>
+          </label>
+        </li>
+        <li>
+          <label>
+            <span class="label-text">每周三</span>
+            <input type="checkbox" name="wednesday" value="3">
+            <span class="icon-listview-right"></span>
+          </label>
+        </li>
+        <li>
+          <label>
+            <span class="label-text">每周四</span>
+            <input type="checkbox" name="thursday" value="4">
+            <span class="icon-listview-right"></span>
+          </label>
+        </li>
+        <li>
+          <label>
+            <span class="label-text">每周五</span>
+            <input type="checkbox" name="friday" value="5">
+            <span class="icon-listview-right"></span>
+          </label>
+        </li>
+        <li>
+          <label>
+            <span class="label-text">每周六</span>
+            <input type="checkbox" name="saturday" value="6">
+            <span class="icon-listview-right"></span>
+          </label>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="page" id="alarm-time3">
+    <div class="container">
+      <div class="text-center ptb15">
+        <input type="time" class="input-time" data-default="07:00" name="time3" value="00:00">
+      </div>
+      <ul class="list-view list-view-sm checklist week-container">
+        <li>
+          <label>
+            <span class="label-text">每周日</span>
+            <input type="checkbox" name="sunday" value="0">
+            <span class="icon-listview-right"></span>
+          </label>
+        </li>
+        <li>
+          <label>
+            <span class="label-text">每周一</span>
+            <input type="checkbox" name="monday" value="1">
+            <span class="icon-listview-right"></span>
+          </label>
+        </li>
+        <li>
+          <label>
+            <span class="label-text">每周二</span>
+            <input type="checkbox" name="tuesday" value="2">
+            <span class="icon-listview-right"></span>
+          </label>
+        </li>
+        <li>
+          <label>
+            <span class="label-text">每周三</span>
+            <input type="checkbox" name="wednesday" value="3">
+            <span class="icon-listview-right"></span>
+          </label>
+        </li>
+        <li>
+          <label>
+            <span class="label-text">每周四</span>
+            <input type="checkbox" name="thursday" value="4">
+            <span class="icon-listview-right"></span>
+          </label>
+        </li>
+        <li>
+          <label>
+            <span class="label-text">每周五</span>
+            <input type="checkbox" name="friday" value="5">
+            <span class="icon-listview-right"></span>
+          </label>
+        </li>
+        <li>
+          <label>
+            <span class="label-text">每周六</span>
+            <input type="checkbox" name="saturday" value="6">
+            <span class="icon-listview-right"></span>
+          </label>
+        </li>
+      </ul>
+    </div>
+  </div>
+</form>
+</div>
+</body>
+</html>

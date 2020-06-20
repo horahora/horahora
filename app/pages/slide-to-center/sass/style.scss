@@ -1,0 +1,1060 @@
+@import "mixins";
+@import "normalize";
+@import "utilities";
+
+html, body {
+  /*height: 100%;*/
+}
+
+html {
+  max-width: 768px;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 14px;
+  line-height: 1.5;
+  font-family: sans-serif;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+}
+
+body {
+}
+
+
+
+img {
+  vertical-align: middle;
+}
+
+.container {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+#skrollr-body {
+  /*border-left: 1px solid red;
+  border-right: 1px solid red;*/
+}
+.skrollr-body:before,
+.skrollr-body:after {
+  content: "";
+  display: table;
+}
+
+.skrollr-body:after {
+  clear: both;
+}
+
+.img-responsive {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+
+$enable-parallax: false;
+.photo-group {
+  position: relative;
+  // margin-bottom: 10px;
+  @if $enable-parallax {
+    overflow: hidden;
+  }
+}
+
+.photo-group-inner {
+
+}
+
+.photo-item {
+  // -webkit-box-sizing: border-box;
+  //    -moz-box-sizing: border-box;
+  //         box-sizing: border-box;
+  position: absolute;
+  /*outline: 1px solid olive;*/
+  @if $enable-parallax {
+    overflow: hidden;
+  }
+}
+
+.photo-item-inner {
+  // -webkit-transform: scale(1.1, 1.1);
+  // transform: scale(1.1, 1.1);
+  position: relative;
+  -webkit-transform-origin: 50% 50%;
+  transform-origin: 50% 50%;
+}
+
+.photo-item:before,
+.photo-item:after,
+.photo-item-inner:before,
+.photo-item-inner:after {
+  content: '';
+  position: absolute;
+  z-index: 1;
+  background: #fff;
+  transform: translateZ(0);
+}
+
+.photo-item-wrapper {
+  display: block;
+  height: 0;
+  width: 100%;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.photo-item img {
+  display: block;
+  width: 100%;
+  height: auto;
+  /*tranform: scale(1.1,1.1);*/
+}
+
+.photo-info {
+  position: relative;
+  // padding-left: 20px;
+  // padding-right: 20px;
+  // margin-top: 10px;
+  // margin-bottom: 10px;
+}
+
+.photo-author {
+  position: absolute;
+  top: 5px;
+}
+
+.photo-author .author-name {
+  color: #8e915c;
+}
+
+.photo-description {
+  text-align: center;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+  // height: 100px;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-bottom: 34px;
+  padding-top: 44px;
+}
+
+$photo-item-gap-width: 10px;
+$photo-item-gap: 10px solid #fff;
+// 左上z-index:1 border-right border-bottom 尺寸加上 border-right border-bottom
+// 右上z-index:2 border-left botder-bottom  尺寸加上 border-bottom
+// 左下z-index:3 border-top border-right    尺寸加上 border-right
+// 右下z-index:4 border-top border-left
+// 最后一排的尺寸不加上 border-bottom
+
+@mixin photo-item-border-left {
+  height: 100%;
+  width: $photo-item-gap-width;
+  top: 0;
+  left: -$photo-item-gap-width/2;
+}
+@mixin photo-item-border-right {
+  height: 100%;
+  width: $photo-item-gap-width;
+  top: 0;
+  right: -$photo-item-gap-width/2;
+}
+@mixin photo-item-border-top {
+  width: 100%;
+  height: $photo-item-gap-width;
+  left: 0;
+  top: -$photo-item-gap-width/2;
+}
+@mixin photo-item-border-bottom {
+  width: 100%;
+  height: $photo-item-gap-width;
+  left: 0;
+  bottom: -$photo-item-gap-width/2;
+}
+
+.photo-group-1-1 {
+  margin-left: -10px;
+  margin-right: -10px;
+  .photo-group-inner {
+    padding-bottom: percentage(410px/640px);
+  }
+  .photo-item:nth-child(1) {
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    .photo-item-wrapper {
+      padding-bottom: percentage(410px/640px);
+    }
+  }
+}
+
+.photo-group-1-2 {
+  .photo-group-inner {
+    padding-bottom: percentage(411px/561px);
+  }
+  .photo-item:nth-child(1) {
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    .photo-item-wrapper {
+      padding-bottom: percentage(411px/561px);
+    }
+  }
+}
+
+.photo-group-2-1 {
+  .photo-group-inner {
+    padding-bottom: percentage(634px/560px);
+  }
+  .photo-item:nth-child(1) {
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    @if $enable-parallax {
+      &:after {
+        @include photo-item-border-bottom;
+      }
+    } @else {
+      .photo-item-inner:after {
+        @include photo-item-border-bottom;
+      }
+    }
+
+    .photo-item-wrapper {
+      padding-bottom: percentage(317px/560px);
+    }
+  }
+  .photo-item:nth-child(2) {
+    z-index: 2;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    @if $enable-parallax {
+      &:after {
+        @include photo-item-border-top;
+      }
+    } @else {
+      .photo-item-inner:after {
+        @include photo-item-border-top;
+      }
+    }
+    .photo-item-wrapper {
+      padding-bottom: percentage(317px/560px);
+    }
+  }
+}
+
+
+.photo-group-2-2 {
+  .photo-group-inner {
+    padding-bottom: percentage(348px/540px);
+  }
+  .photo-item:nth-child(1) {
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 50%;
+    @if $enable-parallax {
+      &:after {
+        @include photo-item-border-right;
+      }
+    } @else {
+      .photo-item-inner:after {
+        @include photo-item-border-right;
+      }
+    }
+    .photo-item-wrapper {
+      padding-bottom: percentage(348px/270px);
+    }
+  }
+  .photo-item:nth-child(2) {
+    z-index: 3;
+    top: 0;
+    right: 0;
+    width: 50%;
+    @if $enable-parallax {
+      &:after {
+        @include photo-item-border-left;
+      }
+    } @else {
+      .photo-item-inner:after {
+        @include photo-item-border-left;
+      }
+    }
+    .photo-item-wrapper {
+      padding-bottom: percentage(348px/270px);
+    }
+  }
+}
+
+
+.photo-group-2-5 {
+  .photo-group-inner {
+    padding-bottom: percentage(618px/563px);
+  }
+  .photo-item:nth-child(1) {
+    z-index: 1;
+    left: 0;
+    bottom: 0;
+    width: 50%;
+    @if $enable-parallax {
+      &:after {
+        @include photo-item-border-right;
+      }
+    } @else {
+      .photo-item-inner:after {
+        @include photo-item-border-right;
+      }
+    }
+    .photo-item-wrapper {
+      padding-bottom: percentage(543px/275px);
+    }
+  }
+  .photo-item:nth-child(2) {
+    z-index: 2;
+    top: 0;
+    right: 0;
+    width: 50%;
+    @if $enable-parallax {
+      &:after {
+        @include photo-item-border-left;
+      }
+    } @else {
+      .photo-item-inner:after {
+        @include photo-item-border-left;
+      }
+    }
+    .photo-item-wrapper {
+      padding-bottom: percentage(543px/275px);
+    }
+  }
+}
+
+
+.photo-group-3-1 {
+  .photo-group-inner {
+    padding-bottom: percentage(610px/550px);
+  }
+  .photo-item:nth-child(1) {
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 50%;
+    @if $enable-parallax {
+      &:after {
+        @include photo-item-border-bottom;
+      }
+      &:before {
+        @include photo-item-border-right;
+      }
+    } @else {
+      .photo-item-inner:after {
+        @include photo-item-border-bottom;
+      }
+      .photo-item-inner:before {
+        @include photo-item-border-right;
+      }
+    }
+    .photo-item-wrapper {
+      padding-bottom: percentage(320px/275px);
+    }
+  }
+  .photo-item:nth-child(2) {
+    z-index: 2;
+    top: 0;
+    right: 0;
+    width: 50%;
+    @if $enable-parallax {
+      &:after {
+        @include photo-item-border-left;
+      }
+      &:before {
+        @include photo-item-border-bottom;
+      }
+    } @else {
+      .photo-item-inner:after {
+        @include photo-item-border-left;
+      }
+      .photo-item-inner:before {
+        @include photo-item-border-bottom;
+      }
+    }
+    .photo-item-wrapper {
+      padding-bottom: percentage(320px/275px);
+    }
+  }
+  .photo-item:nth-child(3) {
+    z-index: 3;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    @if $enable-parallax {
+      &:after {
+        @include photo-item-border-top;
+      }
+    } @else {
+      .photo-item-inner:after {
+        @include photo-item-border-top;
+      }
+    }
+    .photo-item-wrapper {
+      padding-bottom: percentage(290px/550px);
+    }
+  }
+}
+
+
+.photo-group-3-2 {
+  .photo-group-inner {
+    padding-bottom: percentage(500px/550px);
+  }
+  .photo-item:nth-child(1) {
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 50%;
+    @if $enable-parallax {
+      &:after {
+        @include photo-item-border-right;
+      }
+    } @else {
+      .photo-item-inner:after {
+        @include photo-item-border-right;
+      }
+    }
+    .photo-item-wrapper {
+      padding-bottom: percentage(500px/275px);
+    }
+  }
+  .photo-item:nth-child(2) {
+    z-index: 2;
+    top: 0;
+    right: 0;
+    width: 50%;
+    @if $enable-parallax {
+      &:after {
+        @include photo-item-border-left;
+      }
+      &:before {
+        @include photo-item-border-bottom;
+      }
+    } @else {
+      .photo-item-inner:after {
+        @include photo-item-border-left;
+      }
+      .photo-item-inner:before {
+        @include photo-item-border-bottom;
+      }
+    }
+    .photo-item-wrapper {
+      padding-bottom: percentage(250px/275px);
+    }
+  }
+  .photo-item:nth-child(3) {
+    z-index: 3;
+    bottom: 0;
+    right: 0;
+    width: 50%;
+    @if $enable-parallax {
+      &:after {
+        @include photo-item-border-left;
+      }
+      &:before {
+        @include photo-item-border-top;
+      }
+    } @else {
+      .photo-item-inner:after {
+        @include photo-item-border-left;
+      }
+      .photo-item-inner:before {
+        @include photo-item-border-top;
+      }
+    }
+    .photo-item-wrapper {
+      padding-bottom: percentage(250px/275px);
+    }
+  }
+}
+
+
+.photo-group-3-3 {
+  .photo-group-inner {
+    padding-bottom: percentage(670px/560px);
+  }
+  .photo-item:nth-child(1) {
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: percentage(325px/560px);
+    @if $enable-parallax {
+      &:after {
+        @include photo-item-border-right;
+      }
+      &:before {
+        @include photo-item-border-bottom;
+      }
+    } @else {
+      .photo-item-inner:after {
+        @include photo-item-border-right;
+      }
+      .photo-item-inner:before {
+        @include photo-item-border-bottom;
+      }
+    }
+    .photo-item-wrapper {
+      padding-bottom: percentage(270px/325px);
+    }
+  }
+  .photo-item:nth-child(2) {
+    z-index: 2;
+    top: 0;
+    right: 0;
+    width: percentage(235px/560px);
+    @if $enable-parallax {
+      &:after {
+        @include photo-item-border-left;
+      }
+      &:before {
+        @include photo-item-border-bottom;
+      }
+    } @else {
+      .photo-item-inner:after {
+        @include photo-item-border-left;
+      }
+      .photo-item-inner:before {
+        @include photo-item-border-bottom;
+      }
+    }
+    .photo-item-wrapper {
+      padding-bottom: percentage(270px/235px);
+    }
+  }
+  .photo-item:nth-child(3) {
+    z-index: 3;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    @if $enable-parallax {
+      &:after {
+        @include photo-item-border-top;
+      }
+    } @else {
+      .photo-item-inner:after {
+        @include photo-item-border-top;
+      }
+    }
+    .photo-item-wrapper {
+      padding-bottom: percentage(400px/560px);
+    }
+  }
+}
+
+
+.photo-group-3-5 {
+  .photo-group-inner {
+    padding-bottom: percentage(224px/540px);
+  }
+  .photo-item:nth-child(1) {
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 33.33%;
+    @if $enable-parallax {
+      &:after {
+        @include photo-item-border-right;
+      }
+    } @else {
+      .photo-item-inner:after {
+        @include photo-item-border-right;
+      }
+    }
+    .photo-item-wrapper {
+      padding-bottom: percentage(224px/180px);
+    }
+  }
+  .photo-item:nth-child(2) {
+    z-index: 2;
+    top: 0;
+    left: 33.33%;
+    width: 33.33%;
+    @if $enable-parallax {
+      &:after {
+        @include photo-item-border-left;
+      }
+      &:before {
+        @include photo-item-border-right;
+      }
+    } @else {
+      .photo-item-inner:after {
+        @include photo-item-border-left;
+      }
+      .photo-item-inner:before {
+        @include photo-item-border-right;
+      }
+    }
+    .photo-item-wrapper {
+      padding-bottom: percentage(224px/180px);
+    }
+  }
+  .photo-item:nth-child(3) {
+    z-index: 3;
+    top: 0;
+    right: 0;
+    width: 33.33%;
+    @if $enable-parallax {
+      &:after {
+        @include photo-item-border-left;
+      }
+    } @else {
+      .photo-item-inner:after {
+        @include photo-item-border-left;
+      }
+    }
+    .photo-item-wrapper {
+      padding-bottom: percentage(224px/180px);
+    }
+  }
+}
+
+
+.photo-group-3-6 {
+  .photo-group-inner {
+    padding-bottom: percentage(528px/540px);
+  }
+  .photo-item:nth-child(1) {
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 33.33%;
+    @if $enable-parallax {
+      &:after {
+        @include photo-item-border-right;
+      }
+    } @else {
+      .photo-item-inner:after {
+        @include photo-item-border-right;
+      }
+    }
+    .photo-item-wrapper {
+      padding-bottom: percentage(528px/180px);
+    }
+  }
+  .photo-item:nth-child(2) {
+    z-index: 2;
+    top: 0;
+    left: 33.33%;
+    width: 33.33%;
+    @if $enable-parallax {
+      &:after {
+        @include photo-item-border-left;
+      }
+      &:before {
+        @include photo-item-border-right;
+      }
+    } @else {
+      .photo-item-inner:after {
+        @include photo-item-border-left;
+      }
+      .photo-item-inner:before {
+        @include photo-item-border-right;
+      }
+    }
+    .photo-item-wrapper {
+      padding-bottom: percentage(528px/180px);
+    }
+  }
+  .photo-item:nth-child(3) {
+    z-index: 3;
+    top: 0;
+    right: 0;
+    width: 33.33%;
+    @if $enable-parallax {
+      &:after {
+        @include photo-item-border-left;
+      }
+    } @else {
+      .photo-item-inner:after {
+        @include photo-item-border-left;
+      }
+    }
+    .photo-item-wrapper {
+      padding-bottom: percentage(528px/180px);
+    }
+  }
+}
+
+
+.photo-group-4-5 {
+  .photo-group-inner {
+    padding-bottom: percentage(440px/550px);
+  }
+  .photo-item:nth-child(1) {
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 50%;
+    @if $enable-parallax {
+      &:after {
+        @include photo-item-border-right;
+      }
+      &:before {
+        @include photo-item-border-bottom;
+      }
+    } @else {
+      .photo-item-inner:after {
+        @include photo-item-border-right;
+      }
+      .photo-item-inner:before {
+        @include photo-item-border-bottom;
+      }
+    }
+    .photo-item-wrapper {
+      padding-bottom: percentage(220px/275px);
+    }
+  }
+  .photo-item:nth-child(2) {
+    z-index: 2;
+    right: 0;
+    top: 0;
+    width: 50%;
+    @if $enable-parallax {
+      &:after {
+        @include photo-item-border-bottom;
+      }
+      &:before {
+        @include photo-item-border-left;
+      }
+    } @else {
+      .photo-item-inner:after {
+        @include photo-item-border-bottom;
+      }
+      .photo-item-inner:before {
+        @include photo-item-border-left;
+      }
+    }
+    .photo-item-wrapper {
+      padding-bottom: percentage(220px/275px);
+    }
+  }
+  .photo-item:nth-child(3) {
+    z-index: 3;
+    left: 0;
+    bottom: 0;
+    width: 50%;
+    @if $enable-parallax {
+      &:after {
+        @include photo-item-border-right;
+      }
+      &:before {
+        @include photo-item-border-top;
+      }
+    } @else {
+      .photo-item-inner:after {
+        @include photo-item-border-right;
+      }
+      .photo-item-inner:before {
+        @include photo-item-border-top;
+      }
+    }
+    .photo-item-wrapper {
+      padding-bottom: percentage(220px/275px);
+    }
+  }
+  .photo-item:nth-child(4) {
+    z-index: 4;
+    right: 0;
+    bottom: 0;
+    width: 50%;
+    @if $enable-parallax {
+      &:after {
+        @include photo-item-border-left;
+      }
+      &:before {
+        @include photo-item-border-top;
+      }
+    } @else {
+      .photo-item-inner:after {
+        @include photo-item-border-left;
+      }
+      .photo-item-inner:before {
+        @include photo-item-border-top;
+      }
+    }
+    .photo-item-wrapper {
+      padding-bottom: percentage(220px/275px);
+    }
+  }
+}
+
+
+.photo-group-4-2 {
+  .photo-group-inner {
+    padding-bottom: percentage(524px/560px);
+  }
+  .photo-item:nth-child(1) {
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    @if $enable-parallax {
+      &:after {
+        @include photo-item-border-bottom;
+      }
+    } @else {
+      .photo-item-inner:after {
+        @include photo-item-border-bottom;
+      }
+    }
+    .photo-item-wrapper {
+      padding-bottom: percentage(300px/560px);
+    }
+  }
+  .photo-item:nth-child(2) {
+    z-index: 2;
+    left: 0;
+    bottom: 0;
+    width: 33.33%;
+    @if $enable-parallax {
+      &:after {
+        @include photo-item-border-right;
+      }
+      &:before {
+        @include photo-item-border-top;
+      }
+    } @else {
+      .photo-item-inner:after {
+        @include photo-item-border-right;
+      }
+      .photo-item-inner:before {
+        @include photo-item-border-top;
+      }
+    }
+    .photo-item-wrapper {
+      padding-bottom: percentage(224px/186px);
+    }
+  }
+  .photo-item:nth-child(3) {
+    z-index: 3;
+    bottom: -5px;
+    left: 33.33%;
+    width: 33.33%;
+    @if $enable-parallax {
+      &:after {
+        @include photo-item-border-left;
+      }
+      &:before {
+        @include photo-item-border-right;
+      }
+    } @else {
+      .photo-item-inner:after {
+        @include photo-item-border-left;
+      }
+      .photo-item-inner:before {
+        @include photo-item-border-right;
+      }
+    }
+    .photo-item-wrapper {
+      padding-bottom: percentage(224px/186px);
+    }
+  }
+  .photo-item:nth-child(4) {
+    z-index: 4;
+    right: 0;
+    bottom: 0;
+    width: 33.33%;
+    @if $enable-parallax {
+      &:after {
+        @include photo-item-border-left;
+      }
+      &:before {
+        @include photo-item-border-top;
+      }
+    } @else {
+      .photo-item-inner:after {
+        @include photo-item-border-left;
+      }
+      .photo-item-inner:before {
+        @include photo-item-border-top;
+      }
+    }
+    .photo-item-wrapper {
+      padding-bottom: percentage(224px/186px);
+    }
+  }
+}
+
+
+.photo-group-4-7 {
+  .photo-group-inner {
+    padding-bottom: percentage(487px/560px);
+  }
+  .photo-item:nth-child(1) {
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    @if $enable-parallax {
+      &:after {
+        @include photo-item-border-bottom;
+      }
+    } @else {
+      .photo-item-inner:after {
+        @include photo-item-border-bottom;
+      }
+    }
+    .photo-item-wrapper {
+      padding-bottom: percentage(330px/560px);
+    }
+  }
+  .photo-item:nth-child(2) {
+    z-index: 2;
+    left: 0;
+    bottom: 0;
+    width: 33.33%;
+    @if $enable-parallax {
+      &:after {
+        @include photo-item-border-right;
+      }
+      &:before {
+        @include photo-item-border-top;
+      }
+    } @else {
+      .photo-item-inner:after {
+        @include photo-item-border-right;
+      }
+      .photo-item-inner:before {
+        @include photo-item-border-top;
+      }
+    }
+    .photo-item-wrapper {
+      padding-bottom: percentage(157px/186px);
+    }
+  }
+  .photo-item:nth-child(3) {
+    z-index: 3;
+    bottom: -5px;
+    left: 33.33%;
+    width: 33.33%;
+    @if $enable-parallax {
+      &:after {
+        @include photo-item-border-left;
+      }
+      &:before {
+        @include photo-item-border-right;
+      }
+    } @else {
+      .photo-item-inner:after {
+        @include photo-item-border-left;
+      }
+      .photo-item-inner:before {
+        @include photo-item-border-right;
+      }
+    }
+    .photo-item-wrapper {
+      padding-bottom: percentage(157px/186px);
+    }
+  }
+  .photo-item:nth-child(4) {
+    z-index: 4;
+    right: 0;
+    bottom: 0;
+    width: 33.33%;
+    @if $enable-parallax {
+      &:after {
+        @include photo-item-border-left;
+      }
+      &:before {
+        @include photo-item-border-top;
+      }
+    } @else {
+      .photo-item-inner:after {
+        @include photo-item-border-left;
+      }
+      .photo-item-inner:before {
+        @include photo-item-border-top;
+      }
+    }
+    .photo-item-inner:before {
+      @include photo-item-border-top;
+    }
+    .photo-item-inner:after {
+      @include photo-item-border-left;
+    }
+    .photo-item-wrapper {
+      padding-bottom: percentage(157px/186px);
+    }
+  }
+}
+
+
+
+
+.gallery-header {
+  text-align: center;
+  margin-top: 50px;
+  margin-bottom: 20px;
+  .gallery-title {
+    font-size: 26px;
+  }
+}
+
+.gallery-cover {
+  margin-left: 30px;
+  margin-right: 30px;
+  .photo-group-inner {
+    padding-bottom: percentage(276px/496px);
+  }
+  .photo-item:nth-child(1) {
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    .photo-item-wrapper {
+      padding-bottom: percentage(276px/496px);
+    }
+  }
+}
+
+.gallery-description {
+  height: 100px;
+  text-align: center;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+}
+
+.gallery-authors {
+  height: 40px;
+  background: #ffab17;
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-bottom: 30px;
+  text-align: left;
+}
+.gallery-authors img {
+  width: 40px;
+  height: 40px;
+}
+
+
+.gallery-footer {
+  font-size: 30px;
+  text-align: center;
+  margin-top: 30px;
+  margin-bottom: 70px;
+}

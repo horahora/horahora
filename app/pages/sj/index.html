@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+<meta charset="utf-8">
+<title>乐跑 - 健身方案</title>
+<meta name="viewport" content="initial-scale=1, user-scalable=no">
+<link rel="stylesheet" href="css/style.css">
+<style>
+.spinner {
+  position: relative;
+  display: inline-block;
+  width: 100px;
+  height: 100px;
+}
+.spinner div {
+  position: absolute;
+  left: 44.5%;
+  top: 37%;
+  width: 12%;
+  height: 29%;
+  background: #333;
+  opacity: 0;
+  border-radius: 50px;
+  box-shadow: 0 0 3px rgba(0,0,0,0.2);
+  -webkit-animation: fade 1s linear infinite;
+          animation: fade 1s linear infinite;
+}
+
+@-webkit-keyframes fade {
+  from { opacity: 1; }
+  to   { opacity: 0.2; }
+}
+@keyframes fade {
+  from { opacity: 1; }
+  to   { opacity: 0.2; }
+}
+.spinner .bar1 {
+  -webkit-transform: rotate(0deg) translateY(-142%);
+  transform: rotate(0deg) translateY(-142%);
+  -webkit-animation-delay: 0s;
+  animation-delay: 0s;
+}
+.spinner .bar2 {
+  -webkit-transform:rotate(30deg) translateY(-142%);
+  transform:rotate(30deg) ttranslateY(-142%);
+  -webkit-animation-delay: -0.9167s;
+  animation-delay: -0.9167s;
+}
+.spinner .bar3 {
+  -webkit-transform:rotate(60deg) translateY(-142%);
+  transform:rotate(60deg) translateY(-142%);
+  -webkit-animation-delay: -0.833s;
+  animation-delay: -0.833s;
+}
+.spinner .bar4 {
+  -webkit-transform:rotate(90deg) translateY(-142%);
+  transform:rotate(90deg) translateY(-142%);
+  -webkit-animation-delay: -0.75s;
+  animation-delay: -0.75s;
+}
+.spinner .bar5 {
+  -webkit-transform:rotate(120deg) translateY(-142%);
+  transform:rotate(120deg) translateY(-142%);
+  -webkit-animation-delay: -0.667s;
+  animation-delay: -0.667s;
+}
+.spinner .bar6 {
+  -webkit-transform:rotate(150deg) translateY(-142%);
+  transform:rotate(150deg) translateY(-142%);
+  -webkit-animation-delay: -0.5833s;
+  animation-delay: -0.5833s;
+}
+.spinner .bar7 {
+  -webkit-transform:rotate(180deg) translateY(-142%);
+  transform:rotate(180deg) translateY(-142%);
+  -webkit-animation-delay: -0.5s;
+  animation-delay: -0.5s;
+}
+.spinner .bar8 {
+  -webkit-transform:rotate(210deg) translateY(-142%);
+  transform:rotate(210deg) translateY(-142%);
+  -webkit-animation-delay: -0.41667s;
+  animation-delay: -0.41667s;
+}
+.spinner .bar9 {
+  -webkit-transform:rotate(240deg) translateY(-142%);
+  transform:rotate(240deg) translateY(-142%);
+  -webkit-animation-delay: -0.333s;
+  animation-delay: -0.333s;
+}
+.spinner .bar10 {
+  -webkit-transform:rotate(270deg) translateY(-142%);
+  transform:rotate(270deg) translateY(-142%);
+  -webkit-animation-delay: -0.25s;
+  animation-delay: -0.25s;
+}
+.spinner .bar11 {
+  -webkit-transform:rotate(300deg) translateY(-142%);
+  transform:rotate(300deg) translateY(-142%);
+  -webkit-animation-delay: -0.1667s;
+  animation-delay: -0.1667s;
+}
+.spinner .bar12 {
+  -webkit-transform:rotate(330deg) translateY(-142%);
+  transform:rotate(330deg) translateY(-142%);
+  -webkit-animation-delay: -0.0833s;
+  animation-delay: -0.0833s;
+}
+
+.loading {
+  position: fixed;
+  z-index: 10000;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #f2f2f2;
+  -webkit-transition: opacity 0.2s ease-out;
+  transition: opacity 0.2s ease-out;
+}
+.loading .spinner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 25px;
+  height: 25px;
+  margin: auto;
+}
+.loading .spinner div {
+  background: #666;
+}
+.fade-out {
+  opacity: 0;
+}
+</style>
+</head>
+<body id="scheme">
+
+  <div class="outer-wrapper">
+    <div class="scroll-nav-container">
+      <div class="page-header">
+        <h1 class="page-title">私教</h1>
+      </div>
+      <ul class="fitness-type scroll-nav">
+        <li>
+          <a href="#type1">
+            <img class="icon-fitness-type" src="img/icon_fitness_lose_weight@2x.png" width="58" height="58" alt="减肥">
+            <span class="fitness-type-text">减肥</span>
+          </a>
+        </li>
+        <li>
+          <a href="#type2">
+            <img class="icon-fitness-type" src="img/icon_fitness_workout@2x.png" width="58" height="58" alt="局部塑身">
+            <span class="fitness-type-text">局部塑身</span>
+          </a>
+        </li>
+        <li>
+          <a href="#type3">
+            <img class="icon-fitness-type" src="img/icon_fitness_increase_muscle@2x.png" width="58" height="58" alt="增肌">
+            <span class="fitness-type-text">增肌</span>
+          </a>
+        </li>
+        <li>
+          <a href="#type4">
+            <img class="icon-fitness-type" src="img/icon_fitness_physical_enhancement@2x.png" width="58" height="58" alt="体质增强">
+            <span class="fitness-type-text">体质增强</span>
+          </a>
+        </li>
+
+        <li>
+          <a href="#type5">
+            <img class="icon-fitness-type" src="img/icon_fitness_relax@2x.png" width="58" height="58" alt="办公室放松">
+            <span class="fitness-type-text">办公室放松</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <script src="js/fastclick.js"></script>
+  <script src="js/jquery-2.1.0.min.js"></script>
+  <script src="js/jquery.slides.min.js"></script>
+  <script>
+    $(function() {
+
+      var isIos = (navigator.userAgent.indexOf('Mac') > -1 && navigator.userAgent.indexOf('Mobile') > -1);
+      if(isIos) {
+        FastClick.attach(document.body);
+      }
+
+      history.replaceState(null, '');
+      var action = {};
+
+      $.getJSON('scheme-data.json', function(data) {
+        var html = '';
+        $.each(data, function(index, value) {
+          var type = value.type;
+          html += '<div class="scroll-pane" id="type' + type + '">';
+            html += '<div class="scroll-nav-container fitness-type-sub">';
+              html += '<div class="page-header"><button class="back" type="button"></button><h1 class="page-title">私教</h1></div>';
+              html += '<div class="overflow-wrapper">';
+                html += '<div class="heading-banner">';
+                  html += '<img src="img/' + value.icon.split(';')[1] + '" width="320" height="63" alt="' + value.name + '">';
+                html += '</div>';
+                $.each(value.trainingDayList, function(index, value) {
+                  var day = value.days + 1;
+                  html += '<div class="day-wrapper">';
+                    html += '<div class="day-title">第' + day + '天</div>';
+                    html += '<ul class="scroll-nav">';
+                      $.each(value.trainingList, function(index, value) {
+                        var list = index + 1;
+                        html += '<li><a href="#type' + type + '-day' + day + '-list' + list + '">' + value.name + '</a></li>';
+                      });
+                    html += '</ul>';
+                  html += '</div>';
+                });
+              html += '</div>';
+            html += '</div>';
+          html += '</div>';
+        });
+        $('.fitness-type').parent('.scroll-nav-container').after(html)
+
+
+        $.each(data, function(index, value) {
+          var type = value.type;
+          $.each(value.trainingDayList, function(index, value) {
+            var day = value.days + 1;
+            $.each(value.trainingList, function(index, value) {
+              var actionContent = '';
+              var list = index + 1;
+              actionContent += '<div class="scroll-pane" id="type' + type + '-day' + day + '-list' + list + '">';
+                actionContent += '<div class="page-header"><button class="back" type="button"></button><h1 class="page-title">私教</h1></div>';
+                actionContent += '<div class="overflow-wrapper action-container">';
+                  actionContent += '<div class="slides action-show">';
+                    $.each(value.diagramList, function(index, value) {
+                      actionContent += '<div class="slide"><img src="img/blank.gif" data-src="img/' + value.image + '"></div>';
+                    });
+                  actionContent += '</div>';
+                  actionContent += '<div class="action-text-container">';
+                    $.each(value.diagramList, function(index, value) {
+                      actionContent += '<div class="action-text">';
+                        actionContent += '<h3 class="action-title">' + value.name + '</h3>';
+                        actionContent += '<div class="action-text-body">';
+                          actionContent += '<p>' + value.description + '</p>'
+                        actionContent += '</div>';
+                      actionContent += '</div>';
+                    });
+                  actionContent += '</div>';
+                actionContent += '</div>';
+              actionContent += '</div>';
+              action['type' + type + '-day' + day + '-list' + list] = actionContent;
+            });
+          });
+        });
+
+        $('.loading').addClass('fade-out').on('webkitTransitionEnd transitionend', function() {
+          $(this).remove();
+        });
+
+      })
+
+
+      $('.outer-wrapper').on('click', '.scroll-nav > li > a', function(event) {
+        event.preventDefault();
+        if($(this).is('.fitness-type-sub .scroll-nav > li > a')) {
+          $(this).closest('.scroll-nav-container').after(action[$(this).attr('href').split('#')[1]]);
+        }
+        var pageTitle = $(this).text().trim();
+
+        $(this).addClass('active');
+        var href = $(this).attr('href');
+        var $scrollOut = $(this).closest('.scroll-nav-container');
+        var $scrollIn = $(href);
+
+        $scrollIn.find('.page-title').text(pageTitle);
+
+        history.pushState({href: href}, '');
+        $scrollIn.addClass('scroll-in');
+        $scrollOut.addClass('scroll-out');
+        lazyLoad();
+        actionSlide();
+      });
+
+
+      window.addEventListener('popstate', function(event) {
+        if(event.state === null) {
+          $('.scroll-in').removeClass('scroll-in');
+          $('.scroll-out').removeClass('scroll-out').find('.scroll-nav > li > a').removeClass('active');
+        } else {
+          var $currentPane =  $(event.state.href);
+          if(event.state.href.indexOf('list') > 0) {
+            $('#' + event.state.href.match(/(type\d+)/)[1]).append(action[event.state.href.split('#')[1]]);
+            $(event.state.href).addClass('scroll-in')
+              .prevAll('.fitness-type-sub').addClass('scroll-out')
+              .closest('.scroll-pane').addClass('scroll-in')
+              .prevAll('.scroll-nav-container').addClass('scroll-out');
+            $('[href=' + event.state.href + ']').addClass('active');
+          } else {
+            $('.fitness-type-sub').removeClass('scroll-out')
+              .find('.scroll-nav > li > a').removeClass('active')
+              .end()
+              .nextAll('.scroll-pane').removeClass('scroll-in').on('webkitTransitionEnd transitionend', function() {
+                $(this).remove();
+              });
+            $(event.state.href).addClass('scroll-in').prevAll('.scroll-nav-container').addClass('scroll-out');
+          }
+
+          lazyLoad();
+          actionSlide();
+        }
+      }, false);
+
+
+      // 延迟图片加载
+      function lazyLoad() {
+        $('.scroll-in .action-show img').each(function() {
+          if($(this).is('.img-loaded')) return;
+          $(this).attr('src', $(this).attr('data-src')).addClass('img-loaded');
+        })
+      }
+
+      // 轮播图
+      function actionSlide() {
+        if($('.fitness-type-sub ~ .scroll-pane.scroll-in img').length <= 1) return;
+        $('.action-show + .action-text-container .action-text:not(:first-child), .action-show > .slide:not(:first-child)').hide();
+        $('.scroll-in .action-show').slidesjs({
+          width:1000,
+          height: 220,
+          navigation: false,
+          callback: {
+            complete: function(number) {
+              var $actionText = $('.scroll-in .action-text-container .action-text');
+               $actionText.hide().eq(number - 1).show();
+            }
+          }
+        })
+      }
+
+      $(document).on('click', 'button.back',function() {
+        history.back();
+      });
+
+
+    })
+  </script>
+
+</body>
+</html>
