@@ -1,6 +1,3 @@
-// bower:scss
-// endbower
-
 @-ms-viewport {
   width: device-width;
 }
@@ -33,7 +30,7 @@ video {
 html {
   min-width: 320px;
   -webkit-text-size-adjust: 100%;
-      -ms-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
 }
 
 body {
@@ -41,8 +38,10 @@ body {
   font-size: 15px;
   line-height: 1.5;
   background: #f0f0f0 url(../images/noise.png) 50% 0;
-  background-image: image-set(url(../images/noise.png) 1x, url(../images/noise@2x.png) 2x);
-  text-shadow: 0 1px rgba(255, 255, 255, 0.8);
+  background-image: image-set(
+    url(../images/noise.png) 1x,
+    url(../images/noise@2x.png) 2x
+  );
   cursor: default;
   user-select: none;
 }
@@ -62,7 +61,7 @@ body > .page-wrapper {
 
 .container:before,
 .container:after {
-  content: " ";
+  content: "";
   display: table;
 }
 
@@ -80,7 +79,7 @@ textarea {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
-  font-family: "Hiragino Sans GB", sans-serif;
+  font-family: "PingFangSC", sans-serif;
 }
 
 /*考虑用:lang*/
@@ -108,9 +107,9 @@ textarea {
 }
 
 button,
-input[type=button],
-input[type=reset],
-input[type=submit] {
+input[type="button"],
+input[type="reset"],
+input[type="submit"] {
   -webkit-appearance: button;
   cursor: pointer;
 }
@@ -156,7 +155,7 @@ video {
 h1,
 h2,
 h3 {
-  font-family: "Hiragino Sans GB", "Microsoft YaHei", "SimHei", sans-serif;
+  font-family: "PingFangSC", "Microsoft YaHei", "SimHei", sans-serif;
 }
 
 p {
@@ -195,12 +194,16 @@ figure {
 
 .clearfix:before,
 .clearfix:after {
-  content: " ";
+  content: "";
   display: table;
 }
 
 .clearfix:after {
   clear: both;
+}
+
+.text-carved {
+  text-shadow: 0 1px rgba(255, 255, 255, 0.8);
 }
 
 #global-header a {
@@ -217,9 +220,12 @@ figure {
   height: 0;
   color: transparent;
   background: url(../images/horahora.png) center no-repeat;
-  background-image: image-set(url(../images/horahora.png) 1x, url(../images/horahora@2x.png) 2x);
+  background-image: image-set(
+    url(../images/horahora.png) 1x,
+    url(../images/horahora@2x.png) 2x
+  );
   -webkit-background-size: contain;
-          background-size: contain;
+  background-size: contain;
 }
 
 #portfolio {
@@ -238,15 +244,15 @@ figure {
   perspective: 1000px;
 }
 
-#portfolio .item:nth-child(4n+1) {
+#portfolio .item:nth-child(4n + 1) {
   perspective-origin: 220.454545% 130%;
 }
 
-#portfolio .item:nth-child(4n+2) {
+#portfolio .item:nth-child(4n + 2) {
   perspective-origin: 117.5% 130%;
 }
 
-#portfolio .item:nth-child(4n+3) {
+#portfolio .item:nth-child(4n + 3) {
   perspective-origin: -6.8181818% 130%;
 }
 
@@ -341,7 +347,7 @@ figure {
 
 #portfolio .item:nth-child(2) .shadow,
 #portfolio .item:nth-child(3) .shadow {
-  animation-duration: 1.0s;
+  animation-duration: 1s;
 }
 
 #portfolio .item:nth-child(1) .paper,
@@ -387,7 +393,7 @@ figure {
 #portfolio .item:nth-child(10) .shadow,
 #portfolio .item:nth-child(11) .paper,
 #portfolio .item:nth-child(11) .shadow {
-  animation-duration: 1.0s;
+  animation-duration: 1s;
   animation-delay: 0.1;
 }
 
@@ -453,7 +459,10 @@ figure {
   padding: 88px 859px 188px 37px;
   line-height: 1.2;
   background: url(../images/hand_with_card_horizontal.png) no-repeat;
-  background-image: image-set(url(../images/hand_with_card_horizontal.png) 1x, url(../images/hand_with_card_horizontal@2x.png) 2x);
+  background-image: image-set(
+    url(../images/hand_with_card_horizontal.png) 1x,
+    url(../images/hand_with_card_horizontal@2x.png) 2x
+  );
 }
 
 #about-me .content.transparent {
@@ -544,7 +553,7 @@ figure {
 }
 
 #global-footer .lang-toggle a:hover,
-#global-footer ul.lang-toggle a:focus	 {
+#global-footer ul.lang-toggle a:focus {
   color: #222;
 }
 
@@ -572,8 +581,8 @@ figure {
   }
 
   #portfolio .item {
-    width: 22.680412%;          /* 220/970 */
-    margin: 0 3.0927835% 30px 0;  /* 15/970 */
+    width: 22.680412%; /* 220/970 */
+    margin: 0 3.0927835% 30px 0; /* 15/970 */
   }
 
   #portfolio .item:nth-child(4n) {
@@ -602,11 +611,11 @@ figure {
     margin: 0 3% 3% 0;
   }
 
-  #portfolio .item:nth-child(3n+1) {
+  #portfolio .item:nth-child(3n + 1) {
     perspective-origin: 159.090909% 130%;
   }
 
-  #portfolio .item:nth-child(3n+2) {
+  #portfolio .item:nth-child(3n + 2) {
     perspective-origin: 50% 130%;
   }
 
@@ -616,13 +625,13 @@ figure {
   }
 
   #portfolio .item:nth-child(2) .paper,
-  #portfolio .item:nth-child(2) .shadow{
+  #portfolio .item:nth-child(2) .shadow {
     animation-duration: 0.9s;
     animation-delay: -0.02s;
   }
 
   #portfolio .item:nth-child(2) .shadow {
-    animation-duration: 1.0s;
+    animation-duration: 1s;
   }
 
   #portfolio .item:nth-child(1) .paper,
@@ -662,8 +671,8 @@ figure {
   }
 
   #portfolio .item:nth-child(8) .paper,
-  #portfolio .item:nth-child(8) .shadow{
-    animation-duration: 1.0s;
+  #portfolio .item:nth-child(8) .shadow {
+    animation-duration: 1s;
     animation-delay: 0.1;
   }
 
@@ -685,7 +694,7 @@ figure {
   }
 
   #portfolio .item:nth-child(11) .paper,
-  #portfolio .item:nth-child(11) .shadow{
+  #portfolio .item:nth-child(11) .shadow {
     animation-duration: 1.15s;
     animation-delay: 0.16;
   }
@@ -719,15 +728,15 @@ figure {
     margin: 0 5% 5% 0;
   }
 
-  #portfolio .item:nth-child(2n+1) {
+  #portfolio .item:nth-child(2n + 1) {
     -webkit-perspective-origin: 105% 130%;
-            perspective-origin: 105% 130%;
+    perspective-origin: 105% 130%;
   }
 
   #portfolio .item:nth-child(2n) {
     margin-right: 0;
     -webkit-perspective-origin: -5% 130%;
-            perspective-origin: -5% 130%;
+    perspective-origin: -5% 130%;
   }
 
   #portfolio .item .paper {
@@ -738,13 +747,13 @@ figure {
   #portfolio .item:nth-child(1n) .shadow {
     -webkit-animation-duration: 0.4s;
     -webkit-animation-timing-function: ease-out;
-/*
+    /*
     -webkit-animation: none;
             animation: none;
 */
   }
 
-/*
+  /*
   #portfolio .item a.paper:hover,
   #portfolio .item a.paper:focus {
     -webkit-transform: rotateX(0);
@@ -762,7 +771,7 @@ figure {
   #portfolio .item:nth-child(1) .paper,
   #portfolio .item:nth-child(1) .shadow {
     -webkit-animation-name: slide-in-1;
-    -webkit-animation-delay: 0.0s;
+    -webkit-animation-delay: 0s;
   }
 
   @-webkit-keyframes slide-in-1 {
@@ -777,7 +786,7 @@ figure {
   #portfolio .item:nth-child(2) .paper,
   #portfolio .item:nth-child(2) .shadow {
     -webkit-animation-name: slide-in-2;
-    -webkit-animation-delay: 0.0s;
+    -webkit-animation-delay: 0s;
   }
 
   @-webkit-keyframes slide-in-2 {
@@ -789,7 +798,7 @@ figure {
     }
   }
 
-/*
+  /*
   #portfolio .item:nth-child(1) .paper,
   #portfolio .item:nth-child(1) .shadow,
   #portfolio .item:nth-child(2) .paper,
@@ -897,7 +906,10 @@ figure {
     margin-left: -124px;
     padding: 8px 276px 76px 24px;
     background: url(../images/hand_with_card_vertical.png) no-repeat;
-    background-image: image-set(url(../images/hand_with_card_vertical.png) 1x, url(../images/hand_with_card_vertical@2x.png) 2x);
+    background-image: image-set(
+      url(../images/hand_with_card_vertical.png) 1x,
+      url(../images/hand_with_card_vertical@2x.png) 2x
+    );
   }
 
   #about-me .content.hand-animation {
