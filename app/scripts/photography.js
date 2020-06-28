@@ -36,6 +36,7 @@ $$(".photography-list").on("click", "a", e => {
 document.addEventListener("keyup", e => {
   // esc
   if (e.keyCode === 27) {
+    e.preventDefault();
     photoBrowser.close();
   }
   console.log(e.keyCode);
